@@ -1,0 +1,59 @@
+=============================================================================================
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+|																							|
+=============================================================================================
+
+<Player>
+
+* Data 변수
+const int MAX_LIFE;
+
+* 전역 변수
+int iXpos;
+int iYpos;
+int iLife; //최대 5개. 화면에 라이프 개수 하트로 출력. ( ♥ ♥ ♥ ♥ ♥ )
+
+void p_movePlayer();
+void p_attack();
+
+
+<Enemy>
+struct Enemy
+{
+
+};
+
+Enemy enemies[]
+
+GameMgr
+void b_checkIsOver(); //프레임마다 호출하여 life 개수 확인.
+
+
+Q. 외부 파일에서 받아오는 변수를 const 변수 초기화에 사용 가능한가?
+
+
+
+<Screen>
+void sc_Title();
+void sc_Game();
+void sc_ResClear();
+void sc_ResFail();
