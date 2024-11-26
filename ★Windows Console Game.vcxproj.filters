@@ -13,27 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\MovePattern">
+      <UniqueIdentifier>{573a7027-4568-400f-be41-a02d631925bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Stage">
+      <UniqueIdentifier>{f0e43a40-4af6-4e26-813a-06600e661a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\sample">
+      <UniqueIdentifier>{eec434d9-5035-4e75-89cb-303a754241fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="sample\Console_sample.cpp">
+    <ClCompile Include="Scene.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="sample\Console_sample.cpp">
+      <Filter>소스 파일\sample</Filter>
     </ClCompile>
     <ClCompile Include="sample\main_sample.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Screen.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\sample</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sample\Console_sample.h">
+    <ClInclude Include="Scene.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Screen.h">
+    <ClInclude Include="Console.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenSetting.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="sample\Console_sample.h">
+      <Filter>소스 파일\sample</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,6 @@
+* 조작법 튜토리얼
+* PlayerShot 세분화
+
 =============================================================================================
 |																							|
 |																							|
@@ -25,7 +28,8 @@
 <Player>
 
 * Data 변수
-const int MAX_LIFE;
+int MAX_LIFE;
+char SPRITE_PLAYER;
 
 * 전역 변수
 int iXpos;
@@ -35,14 +39,54 @@ int iLife; //최대 5개. 화면에 라이프 개수 하트로 출력. ( ♥ ♥ ♥ ♥ ♥ )
 void p_movePlayer();
 void p_attack();
 
+===============================================================================================
+<Bullet>
+
+//가능하면 스테이지별로 개수 제한 있는 특별총알 추가. 
+struct PlayerShot
+{
+	
+};
+
+
+typedef ENEMY_BULLET_TYPE unsigned short;
+typedef ENEMY_MOVE_PATTERN_TYPE unsigned short;
+struct EnemyShot
+{
+	ENEMY_BULLET_TYPE type;
+};
+
+ENEMY_BULLET_TYPE type;
+* 0000 0001 : 1 감소
+* 0000 0002 : 2 감소 
+* 0000 0003 : 2 감소 + 1초 스턴
+
+
+
+
+===============================================================================================
 
 <Enemy>
+typedef MOVE_PATTERN unsigned char;
+typedef ENEMY_TYPE unsigned char;
+
 struct Enemy
 {
-
+	bool bIsAlive;
+	ENEMY_TYPE ucType;
+	short sLife;
+	MOVE_PATTERN ucMovePattern;
 };
 
 Enemy enemies[]
+
+
+ENEMY_TYPE type;
+* 0000 0001 : life 1
+* 0000 0002 : life 2
+* 0000 0003 : life 2 + 좌우 2칸씩 무빙
+
+===============================================================================================
 
 GameMgr
 void b_checkIsOver(); //프레임마다 호출하여 life 개수 확인.
@@ -52,8 +96,19 @@ Q. 외부 파일에서 받아오는 변수를 const 변수 초기화에 사용 가능한가?
 
 
 
-<Screen>
-void sc_Title();
+<Scene>
+void sc_Title()
+{
+	
+}
+
 void sc_Game();
 void sc_ResClear();
 void sc_ResFail();
+
+RESULT
+- 플레이 시간
+- 최종 스테이지 번호
+- RESTART? 
+- MAIN?
+- EXIT?
