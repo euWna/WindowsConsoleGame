@@ -7,7 +7,7 @@ typedef int SCENE;
 
 enum SCENE_NUM
 {
-	GAME = 0,
+	PLAY = 0,
 	LOADING = 1,
 	TITLE = 2,
 	RES_FAIL = 3,
@@ -16,7 +16,7 @@ enum SCENE_NUM
 };
 
 void scene_Game();
-void scene_Loading();
+void scene_Loading(const char* StageFileName);
 void scene_Title();
 void scene_ResClear();
 void scene_ResFail();

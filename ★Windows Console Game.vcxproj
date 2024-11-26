@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -156,7 +157,8 @@
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="GameStructs.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GlobalObjects.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="sample\Console_sample.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

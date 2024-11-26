@@ -1,6 +1,12 @@
-//기호
+1
 ▽
-//총알
 v
-//이동패턴
+1
 0
+
+//
+- unsigend char 타입번호
+- char 본체 기호
+- char 총알 기호
+- short MAX_HP
+- unsigned char 이동패턴번호

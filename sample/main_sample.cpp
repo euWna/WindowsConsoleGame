@@ -36,7 +36,7 @@
 // 매 줄 출력마다 좌표를 강제로 이동하여 확실하게 출력한다.
 //--------------------------------------------------------------------
 
-char szScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 
 
 //--------------------------------------------------------------------
@@ -136,7 +136,7 @@ void Buffer_Flip(void)
 	for (iCnt = 0; iCnt < dfSCREEN_HEIGHT; iCnt++)
 	{
 		cs_MoveCursor(0, iCnt);
-		printf(szScreenBuffer[iCnt]);
+		printf(ScreenBuffer[iCnt]);
 	}
 }
 
@@ -150,11 +150,11 @@ void Buffer_Flip(void)
 void Buffer_Clear(void)
 {
 	int iCnt;
-	memset(szScreenBuffer, ' ', dfSCREEN_WIDTH * dfSCREEN_HEIGHT);
+	memset(ScreenBuffer, ' ', dfSCREEN_WIDTH * dfSCREEN_HEIGHT);
 
 	for (iCnt = 0; iCnt < dfSCREEN_HEIGHT; iCnt++)
 	{
-		szScreenBuffer[iCnt][dfSCREEN_WIDTH - 1] = '\0';
+		ScreenBuffer[iCnt][dfSCREEN_WIDTH - 1] = '\0';
 	}
 
 }
@@ -169,7 +169,7 @@ void Sprite_Draw(int iX, int iY, char chSprite)
 	if (iX < 0 || iY < 0 || iX >= dfSCREEN_WIDTH - 1 || iY >= dfSCREEN_HEIGHT)
 		return;
 
-	szScreenBuffer[iY][iX] = chSprite;
+	ScreenBuffer[iY][iX] = chSprite;
 }
 
 

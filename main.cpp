@@ -4,17 +4,18 @@
 
 #include "Console.h"
 #include "Buffer.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "Scene.h"
-#include "GameStructs.h"
+#include "ScreenSetting.h"
 
 
 int iPlayerPosX = dfSCREEN_WIDTH/2;
 int iPlayerPosY = dfSCREEN_HEIGHT/2;
 
-Player player;
-Enemy enemies;
 
 SCENE currentScene;
+const char* currentStage = "Stage01.txt";
 //--------------------------------------------------------------------
 // 화면 깜빡임을 없애기 위한 화면 버퍼.
 // 게임이 진행되는 상황을 매번 화면을 지우고 비행기 찍고, 지우고 찍고,
@@ -39,18 +40,26 @@ SCENE currentScene;
 // 화면을 꽉 차게 출력하고 줄바꿈을 하면 2칸이 내려가거나 화면이 밀릴 수 있으므로
 // 매 줄 출력마다 좌표를 강제로 이동하여 확실하게 출력한다.
 //--------------------------------------------------------------------
-char szScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+char ScreenBuffer_Render[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+char ScreenBuffer_Next[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+bool LoadData;
 
-void szRenderScreen(void);
+Player player;
+PlayerShot pShot[dfSCREEN_WIDTH];
+Enemy enemy[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
+EnemyShot eShot[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
+
+void InitGame(void);
+void RenderScreen(void);
 
 
 #pragma comment (lib, "winmm") //timeGetTime() 라이브러리
-
 int main(void)
 {
 	//initialize 
 	timeBeginPeriod(1);
-	currentScene = TITLE;
+
+	InitGame();
 	cs_Initial();
 	
 	//Logic
@@ -61,11 +70,11 @@ int main(void)
 		
 		switch (currentScene)
 		{
-		case GAME:
+		case PLAY:
 			scene_Game();
 			break;
 		case LOADING:
-			scene_Loading();
+			scene_Loading(currentStage);
 			//스테이지 로딩 함수
 			Sleep(1000);
 			break;
@@ -86,21 +95,29 @@ int main(void)
 		}
 
 		//Render
-		szRenderScreen();
-		//render screen sleep 어떻게 하지?
+		buffer_Flip();
+		RenderScreen();
 	}
 	timeEndPeriod(1);
 }
 
+void InitGame(void)
+{
+	//플레이어 데이터
 
-void szRenderScreen(void)
+	//타이틀화면 로드
+	currentScene = TITLE;
+	LoadData = true;
+}
+
+void RenderScreen(void)
 {
 	int iBufCnt;
 
 	for (iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
 	{
 		cs_MoveCursor(0, iBufCnt);
-		printf(szScreenBuffer[iBufCnt]);
+		printf(ScreenBuffer_Render[iBufCnt]);
 	}
 }
 

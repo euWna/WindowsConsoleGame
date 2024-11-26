@@ -1,34 +1,33 @@
-#include <Windows.h>
+#include <windows.h>
 
 #include "Player.h"
 #include "ScreenSetting.h"
-#include "GameStructs.h"
+#include "GlobalObjects.h"
 #include "Buffer.h"
 
 #define X 0
 #define Y 1
 
-
-extern Player player;
-
 void player_Control(SHORT inputKey)
 {
 	switch (inputKey)
 	{
-	case VK_LEFT: 
-		[[fallthrough]]
-	case VK_UP: 
-		[[fallthrough]]
-	case VK_RIGHT: 
-		[[fallthrough]]
-	case VK_DOWN: 
-		player_Move(inputKey);
-		break;
 	case VK_SPACE:
 		player_Shoot();
-		break;
+		return;
+
+	case VK_LEFT: 
+		//[[fallthrough]]
+	case VK_UP: 
+		//[[fallthrough]]
+	case VK_RIGHT: 
+		//[[fallthrough]]
+	case VK_DOWN: 
+		player_Move(inputKey);
+		return;
+
 	default:
-		break;
+		return;
 	}
 }
 
@@ -55,7 +54,7 @@ void player_Shoot()
 
 }
 
-void player_GetShot()
+bool player_GetShot()
 {
 
 }
