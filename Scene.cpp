@@ -28,10 +28,10 @@ void scene_LoadSceneData(const char* fileName, char memory[][dfSCREEN_WIDTH])
 
 void scene_Title()
 {
-	//화면버퍼 업데이트
+	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[TITLE].memory);
 		
-	//스페이스바 누르면 게임 진입
+	//입력 - 스페이스바 누르면 게임 진입
 	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
 	{
 		currentScene = LOADING;
@@ -43,7 +43,7 @@ void scene_Title()
 //스테이지 로딩 함수 
 void scene_Loading()
 {
-	//화면버퍼 업데이트
+	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[LOADING].memory);
 	
 	//스테이지 데이터 불러오기
@@ -53,15 +53,28 @@ void scene_Loading()
 
 void scene_ResFail()
 {
-
+	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[RES_FAIL].memory);
-	//sleep 필요
+	
+	//입력 - 스페이스바 : 게임 재시작 | ESC : 게임 종료
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
+	{
+		//currentScene = LOADING;
+		return;
+	}
 }
 
 void scene_ResClear()
 {
+	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[RES_CLEAR].memory);
-	//sleep 필요
+
+	//입력 - 스페이스바 : 다음 스테이지
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
+	{
+		//currentScene =
+		return;
+	}
 }
 
 void scene_Game()
