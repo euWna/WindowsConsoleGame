@@ -122,18 +122,15 @@ void LoadGameData(void)
 
 	for (int iCnt = 0; iCnt < NUM_OF_SCENE; iCnt++)
 	{
-		char sceneIdx; 	//SCENE_NUM 참조
+		char sceneNum; 	//SCENE_NUM 참조
 		char fileName[MAX_NAME_LEN];
-		fread(&sceneIdx, 1, 1, fp);
+		fread(&sceneNum, 1, 1, fp);
 		fgetc(fp);
 		fgets(fileName, MAX_NAME_LEN, fp);
 		fileName[strlen(fileName)-1] = '\0'; //개행문자 제거
-		scene_LoadSceneData(fileName, Scene[sceneIdx-'0'].memory);
+		scene_LoadSceneData(fileName, Scene[sceneNum-'0'].memory);
 	}
 	fclose(fp);
-	
-
-
 }
 
 void RenderScreen(void)

@@ -53,12 +53,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Console.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="sample\Console_sample.h">
       <Filter>소스 파일\sample</Filter>
     </ClInclude>
@@ -75,6 +69,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
