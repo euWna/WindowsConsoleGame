@@ -2,7 +2,8 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 
-#include <stdio.h>
+#include "ScreenSetting.h"
+
 //--------------------------------------------------------------------
 // 화면 버퍼를 지워주는 함수
 //
@@ -17,8 +18,6 @@ void buffer_Clear(void);
 //--------------------------------------------------------------------
 void buffer_DrawSprite(int iX, int iY, char chSprite);
 
-void buffer_GetSceneData(FILE* fp);
-
-void buffer_Flip();
+void buffer_UpdateScene(char scene_memory[][dfSCREEN_WIDTH]);
 
 #endif

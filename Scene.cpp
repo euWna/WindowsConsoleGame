@@ -1,34 +1,37 @@
 #include <stdio.h>
 #include <Windows.h>
 
-#include "ScreenSetting.h"
 #include "Scene.h"
 #include "Buffer.h"
 
 extern char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
-extern int currentScene;
-extern bool LoadData;
+extern SCENE_NUM currentScene;
+extern int currentStage;
 
-const char* FILE_TITLE = "Title.txt";
-const char* FILE_LOADING = "Loading.txt";
-const char* FILE_RES_FAIL = "ResFail.txt";
-const char* FILE_RES_CLEAR = "ResClear.txt";
+SCENE Scene[4] = { {TITLE}, {LOADING}, {RES_FAIL}, {RES_CLEAR} };
 
+void scene_LoadSceneData(const char* fileName, char memory[][dfSCREEN_WIDTH])
+{
+	FILE* fp = nullptr;
+	fopen_s(&fp, fileName, "r");
+	if (fp == nullptr) return;
+
+	fread(memory, sizeof(ScreenBuffer), 1, fp);
+	for (int iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
+	{
+		memory[iBufCnt][dfSCREEN_WIDTH - 1] = '\0';
+	}
+
+	fclose(fp);
+	return;
+}
 
 void scene_Title()
 {
-	if (LoadData)
-	{
-		FILE* fp = nullptr;
-		fopen_s(&fp, FILE_TITLE, "r");
-		if (fp == nullptr) return;
-
-		buffer_GetSceneData(fp);
-		fclose(fp);
-		LoadData = false;
-	}
-
-
+	//화면버퍼 업데이트
+	buffer_UpdateScene(Scene[TITLE].memory);
+		
+	//스페이스바 누르면 게임 진입
 	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
 	{
 		currentScene = LOADING;
@@ -36,39 +39,14 @@ void scene_Title()
 	}
 }
 
-void scene_Game()
+
+//스테이지 로딩 함수 
+void scene_Loading()
 {
-	int frameResult = 0; //processFrame();
+	//화면버퍼 업데이트
+	buffer_UpdateScene(Scene[LOADING].memory);
 	
-	switch (frameResult)
-	{
-	case PLAY:
-		return;
-	case RES_FAIL:
-		currentScene = RES_FAIL;
-		return;
-	case RES_CLEAR :
-		currentScene = RES_CLEAR;
-		return;
-	default:
-		return;
-	}
-}
-
-//스테이지 로딩 함수 (로딩화면 그리기 + 데이터 불러오기)
-void scene_Loading(const char* StageFileName)
-{
-	//로딩화면 그리기
-	FILE* fp = nullptr;
-	fopen_s(&fp, FILE_LOADING, "r");
-	if (fp == nullptr) return;
-
-	buffer_GetSceneData(fp);
-	fclose(fp);
-
 	//스테이지 데이터 불러오기
-	fopen_s(&fp, StageFileName, "r");
-	if (fp == nullptr) return;
 
 	return;
 }
@@ -76,10 +54,31 @@ void scene_Loading(const char* StageFileName)
 void scene_ResFail()
 {
 
+	buffer_UpdateScene(Scene[RES_FAIL].memory);
+	//sleep 필요
 }
 
 void scene_ResClear()
 {
-
+	buffer_UpdateScene(Scene[RES_CLEAR].memory);
+	//sleep 필요
 }
 
+void scene_Game()
+{
+	int frameResult = 0; //processFrame();
+
+	switch (frameResult)
+	{
+	case PLAY:
+		return;
+	case RES_FAIL:
+		currentScene = RES_FAIL;
+		return;
+	case RES_CLEAR:
+		currentScene = RES_CLEAR;
+		return;
+	default:
+		return;
+	}
+}
