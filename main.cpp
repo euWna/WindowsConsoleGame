@@ -1,7 +1,7 @@
 ﻿#include <stdio.h>
 #include <string.h>
 #include <memory.h>
-#include <Windows.h>
+#include <windows.h>
 
 #include "Console.h"
 #include "Buffer.h"
@@ -10,64 +10,53 @@
 #include "Scene.h"
 #include "ScreenSetting.h"
 
+//게임 데이터
 const char* FILE_SCENE = "SceneInfo.txt";
 const char* FILE_STAGE = "StageInfo.txt";
 const char* FILE_PLAYER = "PlayereInfo.txt";
 const char* FILE_ENEMY = "EnemyInfo.txt";
 const char* FILE_ENEMYSHOT = "EnemyShotInfo.txt";
+void LoadGameData(void);
 
+//씬 제어
 SCENE_NUM currentScene;
 int currentStage;
-//--------------------------------------------------------------------
-// 화면 깜빡임을 없애기 위한 화면 버퍼.
-// 게임이 진행되는 상황을 매번 화면을 지우고 비행기 찍고, 지우고 찍고,
-// 하게 되면 화면이 깜빡깜빡 거리게 된다.
-//
-// 그러므로 화면과 똑같은 크기의 메모리를 할당한 다음에 화면에 바로 찍지않고
-// 메모리(버퍼)상에 그림을 그리고 메모리의 화면을 그대로 화면에 찍어준다.
-//
-// 이렇게 해서 화면을 매번 지우고, 그리고, 지우고, 그리고 하지 않고
-// 메모리(버퍼)상의 그림을 화면에 그리는 작업만 하게 되어 깜박임이 없어진다.
-//
-// 버퍼의 각 줄 마지막엔 NULL 을 넣어 문자열로서 처리하며, 
-// 한줄한줄을 printf 로 찍어나갈 것이다.
-//
-// for ( N = 0 ~ height )
-// {
-// 	  cs_MoveCursor(0, N);
-//    printf(szScreenBuffer[N]);
-// }
-//
-// 줄바꿈에 printf("\n") 을 쓰지 않고 커서좌표를 이동하는 이유는
-// 화면을 꽉 차게 출력하고 줄바꿈을 하면 2칸이 내려가거나 화면이 밀릴 수 있으므로
-// 매 줄 출력마다 좌표를 강제로 이동하여 확실하게 출력한다.
-//--------------------------------------------------------------------
-char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 
+//화면 출력
+char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+void RenderScreen(void);
+
+//프레임 제어 (50fps)
+static const DWORD FRAME_TIME = 20;
+static DWORD t_Standard = 0;
+static int t_gap = 0;
+void CheckFPS(void);
+
+//게임 오브젝트
 Player player;
 PlayerShot pShot[dfSCREEN_WIDTH];
 Enemy enemy[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
 EnemyShot eShot[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
 
-void LoadGameData(void);
-void RenderScreen(void);
-
 
 #pragma comment (lib, "winmm") //timeGetTime() 라이브러리
 int main(void)
 {
+	DWORD t_ProgramStart = timeGetTime();
+	int i = 0;
 	//게임 초기화
 	timeBeginPeriod(1);
 	LoadGameData();
 	currentScene = TITLE; //초기화면 타이틀로 세팅
 	cs_Initial();
-	
-	//프레임 로직
+
 	while (true)
 	{
 		//buffer_Clear();
 		//cs_ClearScreen();
 		
+		//로직부
+		DWORD t_LogicStart = timeGetTime();
 		switch (currentScene)
 		{
 		//Game Play
@@ -93,6 +82,7 @@ int main(void)
 		case RES_CLEAR:
 			scene_ResClear();
 			break;
+		
 		/*
 		case EXIT:
 			Sleep(1500);
@@ -103,11 +93,46 @@ int main(void)
 			return 0;
 		}
 
-		//Render
-		RenderScreen();
-	}
+		//Frame Control
+		///실제 경과 시간 업데이트
+		DWORD t_Elapsed = timeGetTime() - t_ProgramStart;
+		///프레임 기준 시간 업데이트
+		t_Standard += FRAME_TIME;
+		///경과 시간 & 기준 시간 차이 계산
+		t_gap += (t_Elapsed - t_Standard);
 
-	return 0;
+		if (t_gap < 0)
+		{
+			//프레임 전환 대기
+			Sleep(abs(t_gap));
+		}
+		else if (t_gap >= FRAME_TIME)
+		{
+			//프레임 스킵
+			t_gap -= FRAME_TIME;
+			continue;
+		}
+
+		//렌더부
+		RenderScreen();
+		//CheckFPS();
+	}
+}
+
+
+void CheckFPS()
+{
+	static int iFPSCnt = 0;
+	static DWORD Tick = timeGetTime();
+
+	iFPSCnt++;
+	if (timeGetTime() - Tick >= 1000)
+	{
+		printf("FPS %d \n", iFPSCnt);
+		iFPSCnt = 0;
+		//Tick = timeGetTime();
+		Tick += 1000;
+	}
 }
 
 void LoadGameData(void)
@@ -124,10 +149,12 @@ void LoadGameData(void)
 	{
 		char sceneNum; 	//SCENE_NUM 참조
 		char fileName[MAX_NAME_LEN];
+
 		fread(&sceneNum, 1, 1, fp);
-		fgetc(fp);
+		fgetc(fp); //공백 제거
 		fgets(fileName, MAX_NAME_LEN, fp);
 		fileName[strlen(fileName)-1] = '\0'; //개행문자 제거
+
 		scene_LoadSceneData(fileName, Scene[sceneNum-'0'].memory);
 	}
 	fclose(fp);
@@ -144,28 +171,34 @@ void RenderScreen(void)
 	}
 }
 
-//--------------------------------------------------------------------
-// GetAsyncKeyState(int iKey)  #include <Windows.h>
+////프레임 제어 예시 함수
+//int main()
+//{
+//	timeBeginPeriod(1);
+//	DWORD OldTick = timeGetTime();
 //
-// 윈도우 API 로 키보드가 눌렸는지를 확인한다.
-// 인자로 키보드 버튼에 대한 디파인 값을 넣으면 해당 키가 눌렸는지 (눌렸던적이 있는지) 를 확인 해준다.
-// 모든 키에대한 확인이 가능하고, 논블럭 체크가 되므로 게임에서도 쓰기 좋다.
+//	while (true)
+//	{
+//		//키
+//		Sleep(2);
 //
-// Virtual-Key Codes
+//		//로직
+//		Sleep(4);
 //
-// VK_SPACE / VK_ESCAPE / VK_LEFT / VK_UP / 키보드 문자는 대문자 아스키 코드와 같음.
-// winuser.h 파일에 위와 같이 디파인 되어 있다.
+//		//대기
+//		int t = timeGetTime() - OldTick;
+//		int sleeptick = 20 - t;
+//		if (sleeptick > 0)
+//		{
+//			Sleep(sleeptick);
+//		}
+//		//OldTick = timeGetTime();
+//		OldTick += 20;
 //
+//		//렌더
+//		Sleep(6);
+//		CheckFPS();
+//	}
 //
-// GetAsyncKeyState(VK_LEFT) 호출시 결과값은
-//
-// 0x0001  > *이전 체크 이후 눌린적이 있음
-// 0x8000  > 지금 눌려있음
-// 0x8001  > *이전 체크 이후 눌린적도 있고 지금도 눌려 있음
-//
-// * 이전 체크라는건 이전에 GetAsyncKeyState 를 호출한 때를 말 한다.
-// 
-// 10프레임 짜리 게임이라면 1초에 10회의 키 체크를 하게 되므로 체크 간격은 20ms 가 된다.
-// 빠른 커맨드 입력이 필요한 게임에서는 20ms 이내에 여러개의 키입력이 있다면 체크하지 못하는 키 입력이 발생 할 수 있다.
-// 그래서 0x0001 비트에 대한 처리도 필요하다.
-//
+//	timeEndPeriod(1);
+//}
