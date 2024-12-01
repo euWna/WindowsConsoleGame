@@ -72,7 +72,7 @@ int main(void)
 		case LOADING:
 			scene_Loading();
 			//스테이지 로딩 함수
-			Sleep(1000);
+			//Sleep(1000);
 			break;
 
 		case RES_FAIL:
@@ -89,11 +89,12 @@ int main(void)
 			timeEndPeriod(1);
 			return 0;
 		*/
+
 		default:
 			return 0;
 		}
 
-		//Frame Control
+		//프레임 제어
 		///실제 경과 시간 업데이트
 		DWORD t_Elapsed = timeGetTime() - t_ProgramStart;
 		///프레임 기준 시간 업데이트
@@ -115,20 +116,21 @@ int main(void)
 
 		//렌더부
 		RenderScreen();
-		//CheckFPS();
+		CheckFPS();
 	}
 }
 
 
+static int iFPSCnt = 0;
+
 void CheckFPS()
 {
-	static int iFPSCnt = 0;
 	static DWORD Tick = timeGetTime();
 
 	iFPSCnt++;
 	if (timeGetTime() - Tick >= 1000)
 	{
-		printf("FPS %d \n", iFPSCnt);
+		//printf("FPS %d \n", iFPSCnt);
 		iFPSCnt = 0;
 		//Tick = timeGetTime();
 		Tick += 1000;
