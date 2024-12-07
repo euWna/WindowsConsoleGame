@@ -8,5 +8,5 @@ v
 - unsigend char 타입번호
 - char 본체 기호
 - char 총알 기호
-- short MAX_HP
+- int life
 - unsigned char 이동패턴번호

@@ -170,8 +170,8 @@
     <ClInclude Include="ScreenSetting.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Data_Overview.txt" />
-    <Text Include="requirements.txt" />
+    <Text Include="Data\Data_Overview.txt" />
+    <Text Include="Data\requirements.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

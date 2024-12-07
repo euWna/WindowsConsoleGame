@@ -11,11 +11,12 @@
 #include "ScreenSetting.h"
 
 //게임 데이터
-const char* FILE_SCENE = "SceneInfo.txt";
-const char* FILE_STAGE = "StageInfo.txt";
-const char* FILE_PLAYER = "PlayereInfo.txt";
-const char* FILE_ENEMY = "EnemyInfo.txt";
-const char* FILE_ENEMYSHOT = "EnemyShotInfo.txt";
+const char* FILE_DIRECTORY = "Data/";
+const char* FILE_SCENE = "Data/SceneInfo.txt";
+const char* FILE_STAGE = "Data/StageInfo.txt";
+const char* FILE_PLAYER = "Data/PlayereInfo.txt";
+const char* FILE_ENEMY = "Data/EnemyInfo.txt";
+const char* FILE_ENEMYSHOT = "Data/EnemyShotInfo.txt";
 void LoadGameData(void);
 
 //씬 제어
@@ -28,9 +29,9 @@ void RenderScreen(void);
 
 //프레임 제어 (50fps)
 static const DWORD FRAME_TIME = 20;
-static DWORD t_Standard = 0;
-static int t_gap = 0;
-void CheckFPS(void);
+static DWORD t_Standard;
+static int t_gap;
+//void CheckFPS(void);
 
 //게임 오브젝트
 Player player;
@@ -116,51 +117,26 @@ int main(void)
 
 		//렌더부
 		RenderScreen();
-		CheckFPS();
+		//CheckFPS();
 	}
 }
 
 
-static int iFPSCnt = 0;
-
-void CheckFPS()
-{
-	static DWORD Tick = timeGetTime();
-
-	iFPSCnt++;
-	if (timeGetTime() - Tick >= 1000)
-	{
-		//printf("FPS %d \n", iFPSCnt);
-		iFPSCnt = 0;
-		//Tick = timeGetTime();
-		Tick += 1000;
-	}
-}
-
-void LoadGameData(void)
-{
-	FILE* fp = nullptr;
-	//플레이어 데이터 로드
-	//fclose(fp);
-
-	//씬 데이터 로드
-	fopen_s(&fp, FILE_SCENE, "r");
-	if (fp == nullptr) return;
-
-	for (int iCnt = 0; iCnt < NUM_OF_SCENE; iCnt++)
-	{
-		char sceneNum; 	//SCENE_NUM 참조
-		char fileName[MAX_NAME_LEN];
-
-		fread(&sceneNum, 1, 1, fp);
-		fgetc(fp); //공백 제거
-		fgets(fileName, MAX_NAME_LEN, fp);
-		fileName[strlen(fileName)-1] = '\0'; //개행문자 제거
-
-		scene_LoadSceneData(fileName, Scene[sceneNum-'0'].memory);
-	}
-	fclose(fp);
-}
+//static int iFPSCnt = 0;
+//
+//void CheckFPS()
+//{
+//	static DWORD Tick = timeGetTime();
+//
+//	iFPSCnt++;
+//	if (timeGetTime() - Tick >= 1000)
+//	{
+//		//printf("FPS %d \n", iFPSCnt);
+//		iFPSCnt = 0;
+//		//Tick = timeGetTime();
+//		Tick += 1000;
+//	}
+//}
 
 void RenderScreen(void)
 {
@@ -172,6 +148,70 @@ void RenderScreen(void)
 		printf(ScreenBuffer[iBufCnt]);
 	}
 }
+
+void LoadData_Player(void)
+{
+	FILE* fp = nullptr;
+	fopen_s(&fp, FILE_SCENE, "r");
+	if (fp == nullptr)
+	{
+		printf("Player Data does not exist.\n");
+		return;
+	}
+
+
+}
+
+
+void LoadData_Scene(void)
+{
+	FILE* fp = nullptr;
+	fopen_s(&fp, FILE_SCENE, "r");
+	if (fp == nullptr)
+	{
+		printf("Scene Data does not exist.\n");
+		return;
+	}
+
+	for (int iCnt = 0; iCnt < NUM_OF_SCENE; iCnt++)
+	{
+		char sceneNum[6]; 	//SCENE_NUM 참조
+		char fileName[MAX_NAME_LEN];
+
+		//Scene Num
+		fread(&sceneNum, 5, 1, fp);
+		sceneNum[5] = '\0';
+		int iSceneNum = atoi(sceneNum);
+
+		//공백 제거
+		fgetc(fp);
+
+		//Scene Name
+		fgets(fileName, MAX_NAME_LEN, fp);
+		//개행문자 제거
+		int len = strlen(fileName) - 1;
+		if (fileName[len] == '\n')
+			fileName[len] = '\0';
+
+		char DirFileName[MAX_NAME_LEN * 2];
+		strcpy_s(DirFileName, FILE_DIRECTORY);
+		strcat_s(DirFileName, fileName);
+
+		scene_LoadSceneData(DirFileName, Scene[atoi(sceneNum)].memory);
+	}
+	fclose(fp);
+}
+
+
+void LoadGameData(void)
+{
+	//플레이어 데이터 로드
+	LoadData_Player();
+	//씬 데이터 로드
+	LoadData_Scene();
+
+}
+
 
 ////프레임 제어 예시 함수
 //int main()

@@ -1,0 +1,6 @@
+//stage 개수
+3
+//stage 파일명
+stage01.txt
+stage02.txt
+stage03.txt

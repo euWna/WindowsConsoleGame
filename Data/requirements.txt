@@ -28,8 +28,8 @@
 <Player>
 
 * Data 변수
-int MAX_LIFE;
 char SPRITE_PLAYER;
+int MAX_LIFE;
 
 * 전역 변수
 int iXpos;
@@ -80,9 +80,9 @@ struct Enemy
 
 Enemy enemies[]
 
-
+◎
 ENEMY_TYPE type;
-* 0000 0001 : life 1
+* 0000 0001 : life 1 + 좌우 2칸씩 무빙
 * 0000 0002 : life 2
 * 0000 0003 : life 2 + 좌우 2칸씩 무빙
 
@@ -98,10 +98,6 @@ Q. 외부 파일에서 받아오는 변수를 const 변수 초기화에 사용 가능한가?
 
 <Scene>
 void sc_Title()
-{
-	
-}
-
 void sc_Game();
 void sc_ResClear();
 void sc_ResFail();
