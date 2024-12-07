@@ -3,22 +3,17 @@
 #include <memory.h>
 #include <windows.h>
 
+//게임 데이터
+#include "DataParsing.h"
+#include "DataFiles.h"
+void InitGame(void);
+
 //화면 출력
 #include "ScreenSetting.h"
 #include "Console.h"
 #include "Buffer.h"
 char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 void RenderScreen(void);
-
-//게임 데이터
-#include "DataParsing.h"
-//const char* FILE_DIRECTORY = "Data/";
-//const char* FILE_SCENE = "SceneList.txt";
-//const char* FILE_STAGE = "StageList.txt";
-//const char* FILE_PLAYER = "PlayerSetting.txt";
-//const char* FILE_ENEMY = "EnemyInfo.txt";
-//const char* FILE_ENEMYSHOT = "EnemyShotInfo.txt";
-void InitGame(void);
 
 //씬 제어
 #include "Scene.h"
@@ -34,7 +29,6 @@ static int t_gap;
 //게임 오브젝트
 #include "Player.h"
 #include "Enemy.h"
-
 PlayerSettingMemory playerSetting;
 Player player;
 PlayerShot pShot[SCREEN_SIZE];
@@ -123,13 +117,13 @@ int main(void)
 void InitGame(void)
 {
 	//씬 데이터 파싱 및 로드
-	parseData_Scenes();
+	parseData_SceneMgr();
 
 	//Player 데이터 파싱 및 로드
 	parseData_Player();
 
 	//Enemy 데이터 파싱 및 로드
-	parseData_Enemy();
+	parseData_EnemyMgr();
 
 	//초기화면 타이틀로 세팅
 	currentScene = TITLE;

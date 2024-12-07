@@ -8,10 +8,19 @@
 #include "GameObjects.h"
 #include "DataFiles.h"
 
+//파일 경로 및 파일명
+const char* DATA_FILE_PATH = "Data/";
+const char* DATA_FILE_NAME__SCENE = "SceneData.txt";
+const char* DATA_FILE_NAME__STAGE = "StageData.txt";
+const char* DATA_FILE_NAME__PLAYER = "PlayerData.txt";
+const char* DATA_FILE_NAME__ENEMY = "EnemyData.txt";
+const char* DATA_FILE_NAME__ENEMYSHOT = "EnemyShotData.txt";
+
 //파싱 함수
 void parseData_Player(void);
-void parseData_Enemy(void);
-void parseData_Scenes(void);
+void parseData_EnemyMgr(void);
+void parseData_Enemy(const char* fileName);
+void parseData_SceneMgr(void);
 void parseData_Scene(const char* fileName, char memory[][dfSCREEN_WIDTH]);
 
 //파싱 보조함수
@@ -54,12 +63,17 @@ void parseData_Player(void)
 	free(buffer);
 }
 
-void parseData_Enemy(void)
+void parseData_EnemyMgr(void)
 {
 
 }
 
-void parseData_Scenes(void)
+void parseData_Enemy(const char* fileName)
+{
+
+}
+
+void parseData_SceneMgr(void)
 {
 	//파싱할 데이터
 	char scFileDir[MAX_FILE_LEN];
@@ -96,7 +110,7 @@ void parseData_Scenes(void)
 
 		bufferPtr1 = bufferPtr2;
 
-		////개별 Scene 파싱
+		///개별 Scene 파싱
 		char scFilePath[MAX_FILE_LEN * 2];
 		strcpy_s(scFilePath, scFileDir);
 		strcat_s(scFilePath, scFileName);
