@@ -1,9 +1,9 @@
+#include <windows.h>
+
+#include "ScreenSetting.h"
 #include "Enemy.h"
 #include "Player.h"
-#include "ScreenSetting.h"
-
-extern Player player;
-extern Enemy enemy[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
+#include "GameObjects.h"
 
 void enemy_Shoot(int enemyIdx)
 {

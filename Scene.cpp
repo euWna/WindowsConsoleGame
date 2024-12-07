@@ -10,22 +10,6 @@ extern int currentStage;
 
 SCENE Scene[4] = { {TITLE}, {LOADING}, {RES_FAIL}, {RES_CLEAR} };
 
-void scene_LoadSceneData(const char* fileName, char memory[][dfSCREEN_WIDTH])
-{
-	FILE* fp = nullptr;
-	fopen_s(&fp, fileName, "r");
-	if (fp == nullptr) return;
-
-	fread(memory, sizeof(ScreenBuffer), 1, fp);
-	for (int iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
-	{
-		memory[iBufCnt][dfSCREEN_WIDTH - 1] = '\0';
-	}
-
-	fclose(fp);
-	return;
-}
-
 void scene_Title()
 {
 	//로직 - 화면버퍼 업데이트

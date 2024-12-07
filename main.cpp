@@ -3,29 +3,22 @@
 #include <memory.h>
 #include <windows.h>
 
+//화면 출력
+#include "ScreenSetting.h"
 #include "Console.h"
 #include "Buffer.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "Scene.h"
-#include "ScreenSetting.h"
-
-//게임 데이터
-const char* FILE_DIRECTORY = "Data/";
-const char* FILE_SCENE = "Data/SceneInfo.txt";
-const char* FILE_STAGE = "Data/StageInfo.txt";
-const char* FILE_PLAYER = "Data/PlayereInfo.txt";
-const char* FILE_ENEMY = "Data/EnemyInfo.txt";
-const char* FILE_ENEMYSHOT = "Data/EnemyShotInfo.txt";
-void LoadGameData(void);
-
-//씬 제어
-SCENE_NUM currentScene;
-int currentStage;
-
-//화면 출력
 char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 void RenderScreen(void);
+
+//게임 데이터
+#include "DataFiles.h"
+#include "DataParsing.h"
+void InitGame(void);
+
+//씬 제어
+#include "Scene.h"
+SCENE_NUM currentScene;
+int currentStage;
 
 //프레임 제어 (50fps)
 static const DWORD FRAME_TIME = 20;
@@ -34,21 +27,22 @@ static int t_gap;
 //void CheckFPS(void);
 
 //게임 오브젝트
+#include "Player.h"
+#include "Enemy.h"
+
+PlayerSettingMemory playerSetting;
 Player player;
-PlayerShot pShot[dfSCREEN_WIDTH];
-Enemy enemy[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
-EnemyShot eShot[dfSCREEN_HEIGHT * dfSCREEN_WIDTH];
+PlayerShot pShot[SCREEN_SIZE];
+Enemy enemy[SCREEN_SIZE];
+EnemyShot eShot[SCREEN_SIZE];
 
 
 #pragma comment (lib, "winmm") //timeGetTime() 라이브러리
 int main(void)
 {
-	DWORD t_ProgramStart = timeGetTime();
-	int i = 0;
-	//게임 초기화
 	timeBeginPeriod(1);
-	LoadGameData();
-	currentScene = TITLE; //초기화면 타이틀로 세팅
+	DWORD t_ProgramStart = timeGetTime();
+	InitGame();
 	cs_Initial();
 
 	while (true)
@@ -122,6 +116,35 @@ int main(void)
 }
 
 
+
+
+void RenderScreen(void)
+{
+	int iBufCnt;
+
+	for (iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
+	{
+		cs_MoveCursor(0, iBufCnt);
+		printf(ScreenBuffer[iBufCnt]);
+	}
+}
+
+
+void InitGame(void)
+{
+	//플레이어 데이터 로드
+	parseData_Player();
+
+	//씬 데이터 로드
+	parseData_Scenes();
+
+	//초기화면 타이틀로 세팅
+	currentScene = TITLE; 
+
+}
+
+
+////프레임 제어 예시
 //static int iFPSCnt = 0;
 //
 //void CheckFPS()
@@ -138,82 +161,6 @@ int main(void)
 //	}
 //}
 
-void RenderScreen(void)
-{
-	int iBufCnt;
-
-	for (iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
-	{
-		cs_MoveCursor(0, iBufCnt);
-		printf(ScreenBuffer[iBufCnt]);
-	}
-}
-
-void LoadData_Player(void)
-{
-	FILE* fp = nullptr;
-	fopen_s(&fp, FILE_SCENE, "r");
-	if (fp == nullptr)
-	{
-		printf("Player Data does not exist.\n");
-		return;
-	}
-
-
-}
-
-
-void LoadData_Scene(void)
-{
-	FILE* fp = nullptr;
-	fopen_s(&fp, FILE_SCENE, "r");
-	if (fp == nullptr)
-	{
-		printf("Scene Data does not exist.\n");
-		return;
-	}
-
-	for (int iCnt = 0; iCnt < NUM_OF_SCENE; iCnt++)
-	{
-		char sceneNum[6]; 	//SCENE_NUM 참조
-		char fileName[MAX_NAME_LEN];
-
-		//Scene Num
-		fread(&sceneNum, 5, 1, fp);
-		sceneNum[5] = '\0';
-		int iSceneNum = atoi(sceneNum);
-
-		//공백 제거
-		fgetc(fp);
-
-		//Scene Name
-		fgets(fileName, MAX_NAME_LEN, fp);
-		//개행문자 제거
-		int len = strlen(fileName) - 1;
-		if (fileName[len] == '\n')
-			fileName[len] = '\0';
-
-		char DirFileName[MAX_NAME_LEN * 2];
-		strcpy_s(DirFileName, FILE_DIRECTORY);
-		strcat_s(DirFileName, fileName);
-
-		scene_LoadSceneData(DirFileName, Scene[atoi(sceneNum)].memory);
-	}
-	fclose(fp);
-}
-
-
-void LoadGameData(void)
-{
-	//플레이어 데이터 로드
-	LoadData_Player();
-	//씬 데이터 로드
-	LoadData_Scene();
-
-}
-
-
-////프레임 제어 예시 함수
 //int main()
 //{
 //	timeBeginPeriod(1);

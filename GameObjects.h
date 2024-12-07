@@ -1,10 +1,8 @@
 #pragma once
-#ifndef __GLOBAL_OBJECTS_H__
-#define __GLOBAL_OBJECTS_H__
+#ifndef __GAME_OBJECTS_H__
+#define __GAME_OBJECTS_H__
 
-#include "Player.h"
-#include "Enemy.h"
-#include "ScreenSetting.h"
+extern PlayerSettingMemory playerSetting;
 
 extern Player player;
 extern PlayerShot pShot[dfSCREEN_WIDTH];

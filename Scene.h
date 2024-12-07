@@ -26,7 +26,6 @@ struct SCENE
 
 extern SCENE Scene[4];
 
-void scene_LoadSceneData(const char* fileName, char memory[][dfSCREEN_WIDTH]);
 void scene_Game();
 void scene_Loading();
 void scene_Title();

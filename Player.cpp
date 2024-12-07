@@ -1,8 +1,9 @@
 #include <windows.h>
 
 #include "Player.h"
+#include "Enemy.h"
 #include "ScreenSetting.h"
-#include "GlobalObjects.h"
+#include "GameObjects.h"
 #include "Buffer.h"
 
 #define X 0
@@ -37,14 +38,14 @@ void player_Move(SHORT inputKey)
 	//LEFT:0 | UP:1 | RIGHT:2 | DOWN:3
 	int directionNum = inputKey - VK_LEFT;
 	
-	int newXpos = player.iXpos + posOffset[directionNum][X];
-	int newYpos = player.iYpos + posOffset[directionNum][Y];
+	int newXpos = player._xPos + posOffset[directionNum][X];
+	int newYpos = player._yPos + posOffset[directionNum][Y];
 	
 	if (newXpos >= 0 && newXpos < dfSCREEN_WIDTH
 		&& newYpos >= 0 && newYpos < dfSCREEN_HEIGHT)
 	{
-		player.iXpos = newXpos;
-		player.iYpos = newYpos;
+		player._xPos = newXpos;
+		player._yPos = newYpos;
 		return;
 	}
 }

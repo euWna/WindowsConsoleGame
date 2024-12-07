@@ -2,24 +2,29 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include <windows.h>
-
 struct Player
 {
-	int iXpos;
-	int iYpos;
-	int iLife;
-	char cIcon;
+	int _life;
+	int _xPos;
+	int _yPos;
 };
 
 struct PlayerShot
 {
 	bool isGenerated = false;
-	int iXpos;
-	int iYpos;
+	int _xPos;
+	int _yPos;
 	int iPower;
-	char cIcon;
+	char _Sprite;
 };
+
+struct PlayerSettingMemory
+{
+	char SPRITE;
+	char SHOT_SPRITE;
+	int MAX_LIFE;
+};
+
 
 void player_Control(SHORT inputKey);
 void player_Move(SHORT inputKey);

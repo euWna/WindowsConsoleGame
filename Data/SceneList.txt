@@ -2,4 +2,3 @@
 00001 Loading.txt
 00002 ResFail.txt
 00003 ResClear.txt
-←

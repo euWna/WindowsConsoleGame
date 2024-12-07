@@ -1,5 +1,8 @@
 #include "Console.h"
-#include "GlobalObjects.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "ScreenSetting.h"
+#include "GameObjects.h"
 #include "Scene.h"
 
 
@@ -24,8 +27,8 @@ int processFrame()
 		//move pattern
 
 		//충돌 여부 판정
-		if (e.iXpos == player.iXpos
-			&& e.iYpos == player.iYpos)
+		if (e._xPos == player._xPos
+			&& e._yPos == player._yPos)
 		{
 			return RES_FAIL;
 		}
@@ -37,13 +40,13 @@ int processFrame()
 		if (!shot.isGenerated) continue;
 		
 		//이동
-		shot.iYpos--;
+		shot._yPos--;
 
 		//충돌 여부 판정
 		for (Enemy e : enemy)
 		{
-			if (e.iXpos == shot.iXpos
-				&& e.iYpos == shot.iYpos)
+			if (e._xPos == shot._xPos
+				&& e._yPos == shot._yPos)
 			{
 				
 			}
@@ -64,10 +67,10 @@ int processFrame()
 	{
 		if (!shot.isGenerated) continue;
 
-		if (shot.iXpos == player.iXpos
-			&& shot.iXpos == player.iYpos)
+		if (shot._xPos == player._xPos
+			&& shot._xPos == player._yPos)
 		{
-			player.iLife -= shot.iPower;
+			player._life -= shot.iPower;
 		}
 	}
 
