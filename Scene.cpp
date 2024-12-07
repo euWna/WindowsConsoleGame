@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <Windows.h>
+#include <windows.h>
 
+#include "ScreenSetting.h"
 #include "Scene.h"
 #include "Buffer.h"
 
-extern char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 extern SCENE_NUM currentScene;
 extern int currentStage;
 
@@ -15,8 +15,8 @@ void scene_Title()
 	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[TITLE].memory);
 		
-	//입력 - 스페이스바 누르면 게임 진입
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
+	//입력 - 엔터키 누르면 게임 진입
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
 		currentScene = LOADING;
 		return;
@@ -40,10 +40,10 @@ void scene_ResFail()
 	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[RES_FAIL].memory);
 	
-	//입력 - 스페이스바 : 게임 재시작 | ESC : 게임 종료
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
+	//입력 - 엔터키 : 게임 재시작
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
-		//currentScene = LOADING;
+		currentScene = TITLE;
 		return;
 	}
 }

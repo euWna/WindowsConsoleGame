@@ -1,9 +1,9 @@
 #include <memory.h>
 #include <string.h>
 
+#include "ScreenSetting.h"
 #include "Buffer.h"
 
-extern char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 
 void buffer_Clear(void)
 {

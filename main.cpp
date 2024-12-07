@@ -11,8 +11,13 @@ char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 void RenderScreen(void);
 
 //게임 데이터
-#include "DataFiles.h"
 #include "DataParsing.h"
+//const char* FILE_DIRECTORY = "Data/";
+//const char* FILE_SCENE = "SceneList.txt";
+//const char* FILE_STAGE = "StageList.txt";
+//const char* FILE_PLAYER = "PlayerSetting.txt";
+//const char* FILE_ENEMY = "EnemyInfo.txt";
+//const char* FILE_ENEMYSHOT = "EnemyShotInfo.txt";
 void InitGame(void);
 
 //씬 제어
@@ -115,8 +120,20 @@ int main(void)
 	}
 }
 
+void InitGame(void)
+{
+	//씬 데이터 파싱 및 로드
+	parseData_Scenes();
 
+	//Player 데이터 파싱 및 로드
+	parseData_Player();
 
+	//Enemy 데이터 파싱 및 로드
+	parseData_Enemy();
+
+	//초기화면 타이틀로 세팅
+	currentScene = TITLE;
+}
 
 void RenderScreen(void)
 {
@@ -127,20 +144,6 @@ void RenderScreen(void)
 		cs_MoveCursor(0, iBufCnt);
 		printf(ScreenBuffer[iBufCnt]);
 	}
-}
-
-
-void InitGame(void)
-{
-	//플레이어 데이터 로드
-	parseData_Player();
-
-	//씬 데이터 로드
-	parseData_Scenes();
-
-	//초기화면 타이틀로 세팅
-	currentScene = TITLE; 
-
 }
 
 

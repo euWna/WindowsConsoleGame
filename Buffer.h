@@ -2,8 +2,7 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 
-#include "ScreenSetting.h"
-
+extern char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 //--------------------------------------------------------------------
 // 화면 버퍼를 지워주는 함수
 //

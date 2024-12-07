@@ -1,7 +1,7 @@
+#include <windows.h>
 #include <stdio.h>
 
 #include "Console.h"
-
 HANDLE  hConsole;
 
 //-------------------------------------------------------------

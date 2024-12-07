@@ -1,3 +1,4 @@
+Scene/
 00000 Title.txt
 00001 Loading.txt
 00002 ResFail.txt

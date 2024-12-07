@@ -1,12 +1,11 @@
+#include <windows.h>
+
 #include "Console.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "ScreenSetting.h"
 #include "GameObjects.h"
 #include "Scene.h"
-
-
-
 
 int processFrame()
 {
