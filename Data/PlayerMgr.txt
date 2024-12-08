@@ -1,0 +1,8 @@
+P
+^
+5
+
+
+//1) Player Sprite
+//2) Player Shot Sprite
+//3) Player Max Life

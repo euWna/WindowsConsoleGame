@@ -1,0 +1,11 @@
+v
+3
+Enemy_Types/
+1 Enemy_Type1.txt
+2 Enemy_Type2.txt
+3 Enemy_Type3.txt
+3
+Enemy_MovePatterns/
+1 Enemy_MovePattern1.txt
+2 Enemy_MovePattern2.txt
+3 Enemy_MovePattern3.txt

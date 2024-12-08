@@ -1,2 +1,0 @@
-Enemy/
-Enemy01.txt
