@@ -1,15 +1,16 @@
 #include <windows.h>
 
 #include "ScreenSetting.h"
-#include "GameStage.h"
 #include "MovePattern.h"
 #include "Enemy.h"
+#include "GameStage.h"
 #include "Player.h"
-#include "GameObjects.h"
+
 
 Enemy_Type EnemyType_Table[MAX_ENEMY_TYPE];
-
-
+Enemy_Setting enemySetting;
+Enemy enemy[SCREEN_SIZE];
+EnemyShot enemyShot[SCREEN_SIZE];
 
 void enemy_Shoot(int enemyIdx)
 {

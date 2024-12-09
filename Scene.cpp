@@ -6,7 +6,6 @@
 #include "Buffer.h"
 
 extern SCENE_NUM currentScene;
-extern int currentStage;
 
 SCENE Scene[4] = { {TITLE}, {LOADING}, {RES_FAIL}, {RES_CLEAR} };
 
@@ -71,6 +70,7 @@ void scene_Game()
 		return;
 	case RES_FAIL:
 		currentScene = RES_FAIL;
+		Sleep(2000);
 		return;
 	case RES_CLEAR:
 		currentScene = RES_CLEAR;

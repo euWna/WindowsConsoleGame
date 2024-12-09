@@ -1,13 +1,18 @@
 #include <windows.h>
 
-#include "Player.h"
-#include "Enemy.h"
 #include "ScreenSetting.h"
-#include "GameObjects.h"
+#include "Player.h"
+//#include "MovePattern.h"
+//#include "Enemy.h"
+//#include "GameObjects.h"
 #include "Buffer.h"
 
 #define X 0
 #define Y 1
+
+Player player;
+PlayerSetting playerSetting;
+PlayerShot playerShot[SCREEN_SIZE];
 
 void player_Control(SHORT inputKey)
 {
@@ -41,8 +46,9 @@ void player_Move(SHORT inputKey)
 	int newXpos = player._xPos + posOffset[directionNum][X];
 	int newYpos = player._yPos + posOffset[directionNum][Y];
 	
-	if (newXpos >= 0 && newXpos < dfSCREEN_WIDTH
-		&& newYpos >= 0 && newYpos < dfSCREEN_HEIGHT)
+	//Check if new pos's are in the screen range
+	if (newXpos >= 0 && newXpos < dfSCREEN_WIDTH-1
+		&& newYpos >= 0 && newYpos < dfSCREEN_HEIGHT-1)
 	{
 		player._xPos = newXpos;
 		player._yPos = newYpos;

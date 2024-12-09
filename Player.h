@@ -2,9 +2,15 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
+struct PlayerSetting
+{
+	char SPRITE;
+	char SHOT_SPRITE;
+	int MAX_LIFE;
+};
+
 struct Player
 {
-	int _life;
 	int _xPos;
 	int _yPos;
 };
@@ -18,17 +24,15 @@ struct PlayerShot
 	char _Sprite;
 };
 
-struct PlayerSettingMemory
-{
-	char SPRITE;
-	char SHOT_SPRITE;
-	int MAX_LIFE;
-};
-
+extern Player player;
+extern PlayerSetting playerSetting;
+extern PlayerShot playerShot[SCREEN_SIZE];
 
 void player_Control(SHORT inputKey);
 void player_Move(SHORT inputKey);
 void player_Shoot();
 bool player_GetShot();
+
+bool playerShot_hitEnemy();
 
 #endif

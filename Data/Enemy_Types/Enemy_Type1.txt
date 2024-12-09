@@ -1,6 +1,3 @@
 1
+3
 1
-
-//
-- int life (=Sprite)
-- unsigned char 이동패턴번호

@@ -13,7 +13,7 @@ struct MoveOffset
 
 struct MoveSign
 {
-	char _char;
+	int _char;
 	MoveOffset _offset;
 };
 

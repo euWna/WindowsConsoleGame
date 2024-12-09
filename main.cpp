@@ -3,17 +3,18 @@
 #include <memory.h>
 #include <windows.h>
 
-//게임 데이터
-#include "DataParsing.h"
-#include "DataFiles.h"
-void InitGame(void);
-
 //화면 출력
 #include "ScreenSetting.h"
 #include "Console.h"
 #include "Buffer.h"
 char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 void RenderScreen(void);
+
+//게임 데이터
+#include "GameStage.h"
+#include "MovePattern.h"
+#include "DataParsing.h"
+void InitGame(void);
 
 //씬 제어
 #include "Scene.h"
@@ -29,16 +30,12 @@ static int t_gap;
 //게임 오브젝트
 #include "Player.h"
 #include "Enemy.h"
-PlayerSettingMemory playerSetting;
-Player player;
-PlayerShot pShot[SCREEN_SIZE];
-Enemy enemy[SCREEN_SIZE];
-EnemyShot eShot[SCREEN_SIZE];
 
 
 #pragma comment (lib, "winmm") //timeGetTime() 라이브러리
 int main(void)
 {
+	printf("%d %d %d %d %d %d %d %d %d", '→', '←', '↑', '↓', '↗', '↙', '↖', '↘','⊙');
 	timeBeginPeriod(1);
 	DWORD t_ProgramStart = timeGetTime();
 	InitGame();
@@ -116,14 +113,18 @@ int main(void)
 
 void InitGame(void)
 {
-	//씬 데이터 파싱 및 로드
+	//SceneMgr 데이터 파싱 -> Scene별 데이터 저장
 	parseData_SceneMgr();
 
-	//Player 데이터 파싱 및 로드
+	//StageMgr 데이터 파싱 -> Stage별 파일경로 저장
+	parseData_StageMgr();
+
+	//Player 데이터 파싱 및 저장
 	parseData_Player();
 
-	//Enemy 데이터 파싱 및 로드
+	//EnemyMgr 데이터 파싱 -> EnemyType별 데이터 및 저장
 	parseData_EnemyMgr();
+
 
 	//초기화면 타이틀로 세팅
 	currentScene = TITLE;

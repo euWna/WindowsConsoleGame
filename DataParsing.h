@@ -5,5 +5,7 @@
 void parseData_SceneMgr(void);
 void parseData_Player(void);
 void parseData_EnemyMgr(void);
+void parseData_StageMgr(void);
+
 
 #endif 
