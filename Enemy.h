@@ -15,12 +15,12 @@ struct Enemy_MovePatternQueue
 
 struct Enemy
 {
-	bool _isAlive = true;
 	int _xPos;
 	int _yPos;
 	int _life;
-	char _sprite;
 	Enemy_MovePatternQueue _movePattern;
+	char _sprite;
+	bool _isDead = false;
 };
 
 struct EnemySetting
