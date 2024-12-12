@@ -5,7 +5,11 @@
 #include "Scene.h"
 #include "Buffer.h"
 
-extern SCENE_NUM currentScene;
+extern SceneType currentScene;
+extern int currentStage;
+extern void InitGame();
+extern void game_InitStage();
+
 
 SCENE Scene[4] = { {TITLE}, {LOADING}, {RES_FAIL}, {RES_CLEAR} };
 
@@ -18,6 +22,7 @@ void scene_Title()
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
 		currentScene = LOADING;
+		currentStage = 1;
 		return;
 	}
 }
@@ -28,8 +33,18 @@ void scene_Loading()
 {
 	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[LOADING].memory);
-	
-	//스테이지 데이터 불러오기
+
+	//게임 시작시 초기화
+	if (currentStage == 0)
+	{
+		InitGame();
+	}
+
+	//스테이지 시작시 초기화
+	else
+	{
+		game_InitStage();
+	}
 
 	return;
 }
@@ -52,15 +67,16 @@ void scene_ResClear()
 	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[RES_CLEAR].memory);
 
-	//입력 - 스페이스바 : 다음 스테이지
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8001))
+	//입력 - 엔터키 : 다음 스테이지
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
-		//currentScene =
+		currentStage++;
+		currentScene = LOADING;
 		return;
 	}
 }
 
-void scene_Game()
+void scene_PlayGame()
 {
 	int frameResult = 0; //processFrame();
 

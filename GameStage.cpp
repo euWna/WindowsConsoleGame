@@ -6,10 +6,14 @@
 #include "MovePattern.h"
 #include "Enemy.h"
 #include "Scene.h"
+//#include "DataParsing.h"
 #include "GameStage.h"
 
 
 StageMgr stageMgr;
+extern SceneType currentScene;
+extern int currentStage;
+extern void parseData_Stage(int stageNum);
 
 
 int processFrame()
@@ -45,7 +49,7 @@ int processFrame()
 	//Enemy 이동 및 Player와의 충돌 여부(+게임 오버 여부) 판정
 	for (Enemy e : enemy)
 	{
-		if (!e.isAlive) continue;
+		if (!e._isAlive) continue;
 
 		//이동
 		//move pattern
@@ -92,39 +96,94 @@ int processFrame()
 	}
 
 	/*출력*/
-	
 }
 
 
+
+enum StageSetting
+{
+	Init,
+	ParseStageData,
+	InitGameObjects,
+	SetGameObjectsOnStage,
+	Finish
+};
+
+
+
+void game_InitStage()
+{
+	static int nowSetting = 0;
+
+	switch (nowSetting)
+	{
+	case Init:
+		break;
+	case ParseStageData:
+		parseData_Stage(currentStage);
+		break;
+	case InitGameObjects:
+		///Enemy 배열 초기화
+		memset(enemy, 0, sizeof(enemy));
+		///Player life 초기화
+		stageMgr._iPlayerLife = playerSetting._maxLife;
+	case SetGameObjectsOnStage:
+		game_SetGameObjectsOnStage();
+		break;
+	case Finish:
+		currentScene = PLAY;
+		break;
+	default:
+		return;
+	}
+	nowSetting++;
+}
+
+void game_SetGameObjectsOnStage()
+{
+	char* c;
+
+	int eTypeNum;
+	int eCnt = 0;
+	Enemy* e = &(enemy[eCnt]);
+
+	for (int y = 0; y < dfSCREEN_HEIGHT; y++)
+	{
+		for (int x = 0; x < dfSCREEN_WIDTH; x++)
+		{
+			c = &(stageMgr._stageData[y][x]);
+
+			//Void
+			if (*c == '.' || *c == '|' || *c == '*')
+			{
+				stageMgr._stageData[y][x] = ' ';
+			}
+			//Player
+			else if (*c == '0')
+			{
+				stageMgr._stageData[y][x] = playerSetting._sprite;
+			}
+			//Enemy
+			else
+			{
+				eTypeNum = *c - '0';
+				e->_xPos = x;
+				e->_yPos = y;
+				e->_life = EnemyType_Table[eTypeNum]._maxLife;
+				e->_sprite = e->_life;
+				e->_movePattern._type = &MovePattern_Table[EnemyType_Table[eTypeNum]._movePatternTypeNum];
+
+				stageMgr._stageData[y][x] = e->_sprite;
+				eCnt++;
+			}
+		}
+	}
 
 bool game_CheckVisible()
 {
 
 }
 
-
-void game_InitStage(int stageNum)
-{
-	//스테이지 정보 불러오기
-	int* numOfEnemies = &(stageMgr._iEnemyAlive);
-	//char(*stageData)[dfSCREEN_WIDTH] = ScreenBuffer;
-
-	//StageMgr 초기화
-	///Enemy 배열 초기화
-	memset(enemy, 0, sizeof(enemy));
-	int enemyCnt = 0;
-	
-
-	///Player life 초기화
-	stageMgr._iPlayerLife = playerSetting.MAX_LIFE;
-	
-}
-
-void game_ParseStage(const char* filePath)
-{
-	//파싱할 데이터
-
-}
 
 void game_CheckEnemyAlive()
 {
@@ -140,3 +199,5 @@ void game_ShiftStage()
 {
 
 }
+
+

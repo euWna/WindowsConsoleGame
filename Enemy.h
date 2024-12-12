@@ -3,14 +3,14 @@
 #define __ENEMY_H__
 
 #define MAX_ENEMY 20
-#define MAX_ENEMY_TYPE 3
+#define MAX_ENEMY_TYPE 4 //Type Idx : 1 ~ 3 
 
 
 struct Enemy_MovePatternQueue
 {
 	//Circular Queue
-	int _moveIdx;
-	MovePatternType* _type;
+	int _moveIdx = 0;
+	MovePattern* _type;
 };
 
 struct Enemy
@@ -19,16 +19,16 @@ struct Enemy
 	int _xPos;
 	int _yPos;
 	int _life;
-	char _Sprite;
+	char _sprite;
 	Enemy_MovePatternQueue _movePattern;
 };
 
-struct Enemy_Setting
+struct EnemySetting
 {
-	char SHOT_SPRITE;
+	char _shotSprite;
 };
 
-struct Enemy_Type
+struct EnemyType
 {
 	int _maxLife;
 	int _shotCoolTime;
@@ -42,13 +42,13 @@ struct EnemyShot
 	//생성시 pos player 및 enemy 위치에 ypos + 1 로 초기화, 직후 한칸 앞으로
 	int _xPos;
 	int _yPos;
-	char _Sprite;
+	char _sprite;
 };
 
-extern Enemy_Setting enemySetting;
+extern EnemySetting enemySetting;
 extern Enemy enemy[SCREEN_SIZE];
 extern EnemyShot enemyShot[SCREEN_SIZE];
-extern Enemy_Type EnemyType_Table[MAX_ENEMY_TYPE];
+extern EnemyType EnemyType_Table[MAX_ENEMY_TYPE];
 
 void enemy_Shoot(int enemyIdx);
 void enemy_GetShot(int enemyIdx);

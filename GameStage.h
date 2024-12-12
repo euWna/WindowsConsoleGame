@@ -6,7 +6,7 @@
 
 struct StageMgr
 {
-	char stageData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+	char _stageData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 	//Enemy _e[MAX_ENEMY];
 	int _iEnemyAlive;
 	int _iPlayerLife;

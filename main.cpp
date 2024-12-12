@@ -18,13 +18,13 @@ void InitGame(void);
 
 //씬 제어
 #include "Scene.h"
-SCENE_NUM currentScene;
+SceneType currentScene;
 int currentStage;
 
 //프레임 제어 (50fps)
-static const DWORD FRAME_TIME = 20;
-static DWORD t_Standard;
-static int t_gap;
+const DWORD FRAME_TIME = 20;
+DWORD t_Standard;
+int t_gap;
 //void CheckFPS(void);
 
 //게임 오브젝트
@@ -35,7 +35,6 @@ static int t_gap;
 #pragma comment (lib, "winmm") //timeGetTime() 라이브러리
 int main(void)
 {
-	printf("%d %d %d %d %d %d %d %d %d", '→', '←', '↑', '↓', '↗', '↙', '↖', '↘','⊙');
 	timeBeginPeriod(1);
 	DWORD t_ProgramStart = timeGetTime();
 	InitGame();
@@ -50,12 +49,12 @@ int main(void)
 		DWORD t_LogicStart = timeGetTime();
 		switch (currentScene)
 		{
-		//Game Play
+		///Game Play
 		case PLAY:
-			scene_Game();
+			scene_PlayGame();
 			break;
 
-		//Static Scenes
+		///Static Scenes
 		case TITLE:
 			scene_Title();
 			break;
@@ -111,23 +110,55 @@ int main(void)
 	}
 }
 
-void InitGame(void)
+enum GameSetting
 {
+	Init,
+	Data_SceneMgr,
+	Data_StageMgr,
+	Data_Player,
+	Data_EnemyMgr,
+	Finish
+};
+
+void InitGame()
+{
+	static int nowSetting = Init;
+
+	switch (nowSetting)
+	{
+	case Init:
+		currentScene = LOADING;
+		break;
+
 	//SceneMgr 데이터 파싱 -> Scene별 데이터 저장
-	parseData_SceneMgr();
+	case Data_SceneMgr: 
+		parseData_SceneMgr();
+		break;
 
 	//StageMgr 데이터 파싱 -> Stage별 파일경로 저장
-	parseData_StageMgr();
+	case Data_StageMgr:
+		parseData_StageMgr();
+		break;
 
 	//Player 데이터 파싱 및 저장
-	parseData_Player();
+	case Data_Player:
+		parseData_Player();
+		break;
 
-	//EnemyMgr 데이터 파싱 -> EnemyType별 데이터 및 저장
-	parseData_EnemyMgr();
+	//EnemyMgr 데이터 파싱 -> Enemy type별 데이터 및 저장
+	case Data_EnemyMgr:
+		parseData_EnemyMgr();
+		break;
 
+	case Finish:
+		currentScene = TITLE;
+		break;
 
-	//초기화면 타이틀로 세팅
-	currentScene = TITLE;
+	default:
+		return;
+	}
+
+	nowSetting++;
 }
 
 void RenderScreen(void)

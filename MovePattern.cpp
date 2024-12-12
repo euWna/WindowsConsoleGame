@@ -12,4 +12,4 @@ const MoveSign MoveSign_Table[8] =
 	{ '¢Ø',	{-1,-1} },
 };
 
-MovePatternType MovePatternType_Table[MAX_ENEMY_MOVEPATTERN_TYPE + 1];
+MovePattern MovePattern_Table[MAX_ENEMY_MOVEPATTERN_TYPE + 1];

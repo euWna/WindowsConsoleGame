@@ -5,25 +5,24 @@
 
 #define NUM_OF_SCENE 4
 
-enum SCENE_NUM
+enum SceneType
 {
-	TITLE = 0,
-	LOADING = 1,
-	RES_FAIL = 2,
-	RES_CLEAR = 3,
-	PLAY = 4,
-	//EXIT = 5
+	TITLE,
+	LOADING,
+	RES_FAIL,
+	RES_CLEAR,
+	PLAY,
+	//EXIT
 };
 
 struct SCENE
 {
-	SCENE_NUM num;
+	SceneType type;
 	char memory[dfSCREEN_HEIGHT][dfSCREEN_WIDTH] = { 0 };
 };
 
 extern SCENE Scene[4];
-
-void scene_Game();
+void scene_PlayGame();
 void scene_Loading();
 void scene_Title();
 void scene_ResClear();

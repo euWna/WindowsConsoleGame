@@ -4,9 +4,9 @@
 
 struct PlayerSetting
 {
-	char SPRITE;
-	char SHOT_SPRITE;
-	int MAX_LIFE;
+	char _sprite;
+	char _shotSprite;
+	int _maxLife;
 };
 
 struct Player
@@ -21,7 +21,7 @@ struct PlayerShot
 	int _xPos;
 	int _yPos;
 	int iPower;
-	char _Sprite;
+	char _sprite;
 };
 
 extern Player player;

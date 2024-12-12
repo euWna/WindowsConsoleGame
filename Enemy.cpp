@@ -7,8 +7,8 @@
 #include "Player.h"
 
 
-Enemy_Type EnemyType_Table[MAX_ENEMY_TYPE];
-Enemy_Setting enemySetting;
+EnemyType EnemyType_Table[MAX_ENEMY_TYPE];
+EnemySetting enemySetting;
 Enemy enemy[SCREEN_SIZE];
 EnemyShot enemyShot[SCREEN_SIZE];
 
@@ -31,5 +31,5 @@ void enemy_Move(int enemyIdx)
 
 	enemy[enemyIdx]._xPos += _pattern[moveIdx]._x;
 	enemy[enemyIdx]._yPos += _pattern[moveIdx]._y;
-	q->_moveIdx = (moveIdx + 1)%(q->_type->_patternLen);
+	q->_moveIdx = (moveIdx + 1)%(q->_type->_length);
 }

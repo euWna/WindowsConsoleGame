@@ -17,14 +17,14 @@ struct MoveSign
 	MoveOffset _offset;
 };
 
-struct MovePatternType
+struct MovePattern
 {
-	int _patternLen;
+	int _length;
 	MoveOffset _pattern[MAX_ENEMY_MOVEPATTERN_LEN];
 };
 
 extern const MoveSign MoveSign_Table[8];
-extern MovePatternType MovePatternType_Table[MAX_ENEMY_MOVEPATTERN_TYPE + 1];
+extern MovePattern MovePattern_Table[MAX_ENEMY_MOVEPATTERN_TYPE + 1];
 
 
 #endif

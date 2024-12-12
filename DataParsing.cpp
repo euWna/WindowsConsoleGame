@@ -7,8 +7,7 @@
 #include "Player.h"
 #include "Scene.h"
 #include "GameStage.h"
-
-#define MAX_FILE_LEN 105 //100 + 확장자 4 (".txt") + 널문자 1
+#include "DataParsing.h"
 
 extern char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 //extern StageMgr stageMgr;
@@ -40,9 +39,9 @@ size_t file_GetSize(FILE* fp);
 void parseData_Player(void)
 {
 	//파싱할 데이터
-	char* sprite = &playerSetting.SPRITE;
-	char* shotSprite = &playerSetting.SHOT_SPRITE;
-	int* maxLife = &playerSetting.MAX_LIFE;
+	char* sprite = &playerSetting._sprite;
+	char* shotSprite = &playerSetting._shotSprite;
+	int* maxLife = &playerSetting._maxLife;
 
 	//데이터 불러오기
 	char* buffer = file_WriteDataOnBuffer(DATA_MGR_FILE_NAME__PLAYER);
@@ -76,7 +75,7 @@ void parseData_Player(void)
 void parseData_EnemyMgr(void)
 {
 	//파싱할 데이터
-	char* shotSprite = &(enemySetting.SHOT_SPRITE);
+	char* shotSprite = &(enemySetting._shotSprite);
 
 	int eNumOfTypes;
 	char fileDir_Types[MAX_FILE_LEN];
@@ -114,7 +113,7 @@ void parseData_EnemyMgr(void)
 
 	bufferPtr1 = ++bufferPtr2;
 
-	for (int i = 0; i < eNumOfTypes; i++)
+	for (int y = 0; y < eNumOfTypes; y++)
 	{
 		///4. Enemy Type - Number
 		while (*bufferPtr2 != '\n') bufferPtr2++;
@@ -152,7 +151,7 @@ void parseData_EnemyMgr(void)
 
 	bufferPtr1 = ++bufferPtr2;
 
-	for (int i = 0; i < eNumOfTypes; i++)
+	for (int y = 0; y < eNumOfTypes; y++)
 	{
 		///8. Enemy Move Pattern - Number
 		while (*bufferPtr2 != '\n') bufferPtr2++;
@@ -218,7 +217,7 @@ void parseData_EnemyType(int typeNum, const char* filePath)
 void parseData_MovePatternType(int typeNum, const char* filePath)
 {
 	//파싱할 데이터
-	int* _patternLen = &(MovePatternType_Table[typeNum]._patternLen);
+	int* _length = &(MovePattern_Table[typeNum]._length);
 	char movePattern[MAX_ENEMY_MOVEPATTERN_LEN];
 
 	//데이터 불러오기
@@ -233,7 +232,7 @@ void parseData_MovePatternType(int typeNum, const char* filePath)
 	strcpy_s(movePattern, bufferPtr1);
 
 	///1. Move Pattern Length
-	*_patternLen = strlen(movePattern);
+	*_length = strlen(movePattern);
 
 	///2. Move Pattern String -> convert each char into MoveOffset
 	char* patternPtr = movePattern;
@@ -271,7 +270,7 @@ void parseData_MovePatternType(int typeNum, const char* filePath)
 		default:
 			return;
 		}
-		MovePatternType_Table[typeNum]._pattern[currentLen] = MoveSign_Table[signIdx]._offset;
+		MovePattern_Table[typeNum]._pattern[currentLen] = MoveSign_Table[signIdx]._offset;
 
 		patternPtr++;
 		currentLen++;
@@ -406,11 +405,13 @@ void parseData_StageMgr(void)
 	free(buffer);
 }
 
-void parseData_Stage(const char* filePath)
+void parseData_Stage(int stageNum)
 {
+	const char* filePath = DATA_FILE_PATHS__STAGE[stageNum];
+
 	//파싱할 데이터
 	int* numOfEnemies = &(stageMgr._iEnemyAlive);
-	char (*stageData)[dfSCREEN_WIDTH] = ScreenBuffer;
+	char (*stageData)[dfSCREEN_WIDTH] = stageMgr._stageData;
 
 	char* buffer = file_WriteDataOnBuffer(filePath);
 
@@ -426,7 +427,7 @@ void parseData_Stage(const char* filePath)
 	bufferPtr1 = ++bufferPtr2;
 
 	///2. Stage Screen Data
-	const char* screenDataPtr = bufferPtr1;
+	char* screenDataPtr = bufferPtr1;
 	int eCnt = 0;
 	////2-1. 씬 각 행의 마지막 바이트 널문자로 변환
 	for (int iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
@@ -445,6 +446,7 @@ void parseData_Stage(const char* filePath)
 
 	free(buffer);
 }
+
 
 
 //////////////////////////////////////////////////
