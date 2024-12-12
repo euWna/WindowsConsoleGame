@@ -18,7 +18,7 @@ const char* DATA_MGR_FILE_NAME__SCENE = "SceneMgr.txt";
 const char* DATA_MGR_FILE_NAME__PLAYER = "PlayerMgr.txt";
 const char* DATA_MGR_FILE_NAME__ENEMY = "EnemyMgr.txt";
 const char* DATA_MGR_FILE_NAME__STAGE = "StageMgr.txt";
-char DATA_FILE_PATHS__STAGE[MAX_STAGE + 1][MAX_FILE_LEN];
+char DATA_FILE_PATHS__STAGE[MAX_STAGE + 1][MAX_FILE_LEN]; //stage별 파일 경로
 
 
 //파싱 함수
@@ -52,19 +52,21 @@ void parseData_Player(void)
 	///1. Player Sprite (char)
 	*sprite = *bufferPtr;
 
-	while (*bufferPtr != '\n') bufferPtr++;
+	while (*bufferPtr != '\r') bufferPtr++;
+	*bufferPtr++ = '\0';
 	bufferPtr++;
 
 	///2. Player Shot Sprite (char)
 	*shotSprite = *bufferPtr;
 	bufferPtr++;
 
-	while (*bufferPtr != '\n') bufferPtr++;
+	while (*bufferPtr != '\r') bufferPtr++;
+	*bufferPtr++ = '\0';
 	bufferPtr++;
 
 	///3. Player Max Life (int)
 	char* endOfInt = bufferPtr;
-	while (*endOfInt != '\n') endOfInt++;
+	while (*endOfInt != '\r') endOfInt++;
 	*endOfInt = '\0';
 	*maxLife = atoi(bufferPtr);
 
@@ -96,35 +98,37 @@ void parseData_EnemyMgr(void)
 
 	///1. Enemy Shot Sprite
 	*shotSprite = *bufferPtr2;
-	
+
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	bufferPtr2++;
 	bufferPtr1 = ++bufferPtr2;
 
 	///2. Number of Enemy Types
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	eNumOfTypes = atoi(bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
 	///3. Enemy Types - File Directory
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	strcpy_s(fileDir_Types, bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
-	for (int y = 0; y < eNumOfTypes; y++)
+	for (int iCnt = 0; iCnt < eNumOfTypes; iCnt++)
 	{
 		///4. Enemy Type - Number
-		while (*bufferPtr2 != '\n') bufferPtr2++;
+		while (*bufferPtr2 != ' ') bufferPtr2++;
 		*bufferPtr2 = '\0';
 		eTypeNum = atoi(bufferPtr1);
 
 		bufferPtr1 = ++bufferPtr2;
 
 		///5. Enemy Type - File Name
-		while (*bufferPtr2 != '\n') bufferPtr2++;
-		*bufferPtr2 = '\0';
+		while (*bufferPtr2 != '\r') bufferPtr2++;
+		*bufferPtr2++ = '\0';
 		strcpy_s(fileName_Types, bufferPtr1);
 
 		bufferPtr1 = ++bufferPtr2;
@@ -138,31 +142,31 @@ void parseData_EnemyMgr(void)
 	}
 
 	///6. Number of Enemy Move Patterns
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	eNumOfMovePatterns = atoi(bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
 	///7. Enemy Move Patterns - File Directory
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	strcpy_s(fileDir_MovePatterns, bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
-	for (int y = 0; y < eNumOfTypes; y++)
+	for (int iCnt = 0; iCnt < eNumOfTypes; iCnt++)
 	{
 		///8. Enemy Move Pattern - Number
-		while (*bufferPtr2 != '\n') bufferPtr2++;
+		while (*bufferPtr2 != ' ') bufferPtr2++;
 		*bufferPtr2 = '\0';
 		eMovePatternTypeNum = atoi(bufferPtr1);
 
 		bufferPtr1 = ++bufferPtr2;
 
 		///9. Enemy Move Pattern - File Name
-		while (*bufferPtr2 != '\n') bufferPtr2++;
-		*bufferPtr2 = '\0';
+		while (*bufferPtr2 != '\r') bufferPtr2++;
+		*bufferPtr2++ = '\0';
 		strcpy_s(fileName_MovePatterns, bufferPtr1);
 
 		bufferPtr1 = ++bufferPtr2;
@@ -193,31 +197,37 @@ void parseData_EnemyType(int typeNum, const char* filePath)
 	char* bufferPtr2 = buffer;
 	
 	///1. Enemy Max life
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	*maxLife = atoi(bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
 	///2. Enemy Shot Cool Time
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	*coolTime = atoi(bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
 	///3. Move Pattern Number
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	*movePatternTypeNum = atoi(bufferPtr1);
 
 	free(buffer);
 }
 
+struct PatternSign
+{
+	char sign[3];
+};
+
+
 void parseData_MovePatternType(int typeNum, const char* filePath)
 {
 	//파싱할 데이터
-	int* _length = &(MovePattern_Table[typeNum]._length);
+	int* length = &(MovePattern_Table[typeNum]._length);
 	char movePattern[MAX_ENEMY_MOVEPATTERN_LEN];
 
 	//데이터 불러오기
@@ -227,44 +237,51 @@ void parseData_MovePatternType(int typeNum, const char* filePath)
 	char* bufferPtr1 = buffer;
 	char* bufferPtr2 = buffer;
 
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\0') bufferPtr2++;
+	//*bufferPtr2 = '\0';
 	strcpy_s(movePattern, bufferPtr1);
 
 	///1. Move Pattern Length
-	*_length = strlen(movePattern);
+	*length = strlen(movePattern);
 
 	///2. Move Pattern String -> convert each char into MoveOffset
 	char* patternPtr = movePattern;
+	int signNum = 0;
 	int currentLen = 0;
 	int signIdx;
 
-	while (*patternPtr != '\0');
+	while (*patternPtr != '\0')
 	{
-		switch (*patternPtr)
+		signNum = 0;
+		signNum |= 0xff << 24;
+		signNum |= (unsigned char)(*patternPtr++) << 16;
+		signNum |= (unsigned char)(*patternPtr++) << 8;
+		signNum |= (unsigned char)(*patternPtr++);
+
+		switch (signNum)
 		{
-		case '↓':
+		case 0xffe28690: //←
 			signIdx = 0;
 			break;
-		case '→':
+		case 0xffe28691: //↑
 			signIdx = 1;
 			break;
-		case '↑':
+		case 0xffe28692: //→
 			signIdx = 2;
 			break;
-		case '←':
+		case 0xffe28693: //↓
 			signIdx = 3;
 			break;
-		case '↗':
+		case 0xffe28696: //↖
 			signIdx = 4;
 			break;
-		case '↙':
+		case 0xffe28697: //↗
 			signIdx = 5;
 			break;
-		case '↖':
+		case 0xffe28698: //↘
 			signIdx = 6;
 			break;
-		case '↘':
+		case 0xffe28699: //↙
 			signIdx = 7;
 			break;
 		default:
@@ -272,9 +289,9 @@ void parseData_MovePatternType(int typeNum, const char* filePath)
 		}
 		MovePattern_Table[typeNum]._pattern[currentLen] = MoveSign_Table[signIdx]._offset;
 
-		patternPtr++;
 		currentLen++;
 	}
+	*length = currentLen;
 
 	free(buffer);
 }
@@ -294,8 +311,8 @@ void parseData_SceneMgr(void)
 	char* bufferPtr2 = buffer;
 
 	///1. File Directory
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	strcpy_s(fileDir, bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
@@ -310,8 +327,8 @@ void parseData_SceneMgr(void)
 		bufferPtr1 = ++bufferPtr2;
 
 		///3. Scene File Name
-		while (*bufferPtr2 != '\n') bufferPtr2++;
-		*bufferPtr2 = '\0';
+		while (*bufferPtr2 != '\r') bufferPtr2++;
+		*bufferPtr2++ = '\0';
 		strcpy_s(fileName, bufferPtr1);
 
 		bufferPtr1 = ++bufferPtr2;
@@ -339,8 +356,8 @@ void parseData_Scene(const char* filePath, char memory[][dfSCREEN_WIDTH])
 	///씬 각 행의 마지막 바이트 널문자로 변환
 	for (int iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
 	{
-		while (*bufferPtr2 != '\n') bufferPtr2++;
-		*bufferPtr2 = '\0';
+		while (*bufferPtr2 != '\r' && *bufferPtr2 != '\0') bufferPtr2++;
+		*bufferPtr2++ = '\0';
 		strcpy_s(memory[iBufCnt],bufferPtr1);
 		bufferPtr1 = ++bufferPtr2;
 	}
@@ -357,27 +374,27 @@ void parseData_StageMgr(void)
 	char fileName[MAX_FILE_LEN];
 
 	//데이터 불러오기
-	char* buffer = (char*)file_WriteDataOnBuffer(DATA_MGR_FILE_NAME__SCENE);
+	char* buffer = (char*)file_WriteDataOnBuffer(DATA_MGR_FILE_NAME__STAGE);
 
 	//파싱
 	char* bufferPtr1 = buffer;
 	char* bufferPtr2 = buffer;
 
 	///1. File Directory
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	strcpy_s(fileDir, bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
 	///2. Number of Stages
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	numOfStages = atoi(bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
-	for (int iCnt = 0; iCnt < NUM_OF_SCENE; iCnt++)
+	for (int iCnt = 0; iCnt < numOfStages; iCnt++)
 	{
 		///3. Stage Number
 		while (*bufferPtr2 != ' ') bufferPtr2++;
@@ -387,8 +404,8 @@ void parseData_StageMgr(void)
 		bufferPtr1 = ++bufferPtr2;
 
 		///4. Stage File Name
-		while (*bufferPtr2 != '\n') bufferPtr2++;
-		*bufferPtr2 = '\0';
+		while (*bufferPtr2 != '\r') bufferPtr2++;
+		*bufferPtr2++ = '\0';
 		strcpy_s(fileName, bufferPtr1);
 
 		bufferPtr1 = ++bufferPtr2;
@@ -420,22 +437,23 @@ void parseData_Stage(int stageNum)
 	char* bufferPtr2 = buffer;
 
 	///1. Number of Enemies
-	while (*bufferPtr2 != '\n') bufferPtr2++;
-	*bufferPtr2 = '\0';
+	while (*bufferPtr2 != '\r') bufferPtr2++;
+	*bufferPtr2++ = '\0';
 	*numOfEnemies = atoi(bufferPtr1);
 
 	bufferPtr1 = ++bufferPtr2;
 
 	///2. Stage Screen Data
-	char* screenDataPtr = bufferPtr1;
-	int eCnt = 0;
 	////2-1. 씬 각 행의 마지막 바이트 널문자로 변환
 	for (int iBufCnt = 0; iBufCnt < dfSCREEN_HEIGHT; iBufCnt++)
 	{
-		while (*bufferPtr2 != '\n') bufferPtr2++;
-		*bufferPtr2 = '\0';
-		strcpy_s(ScreenBuffer[iBufCnt], bufferPtr1);
-		bufferPtr1 = ++bufferPtr2;
+		while (*bufferPtr2 != '\r' && *bufferPtr2 != '\0') bufferPtr2++;
+		*bufferPtr2++ = '\0';
+		strcpy_s(stageData[iBufCnt], bufferPtr1);
+		
+		bufferPtr1 += dfSCREEN_WIDTH;
+		bufferPtr2 = ++bufferPtr1;
+		//bufferPtr1 = ++bufferPtr2;
 	}
 
 	////2-2.
@@ -458,7 +476,7 @@ char* file_WriteDataOnBuffer(const char* fileName)
 	strcpy_s(filePath, DATA_PATH);
 	strcat_s(filePath, fileName);
 
-	fopen_s(&fp, filePath, "r");
+	fopen_s(&fp, filePath, "rb");
 	if (fp == nullptr)
 	{
 		printf("%s File does not exist.\n", fileName);
@@ -467,7 +485,9 @@ char* file_WriteDataOnBuffer(const char* fileName)
 
 	size_t fileSize = file_GetSize(fp);
 	char* buffer = (char*)malloc(fileSize + 1);
-	fread(buffer, fileSize, 1, fp);
+	buffer[fileSize] = '\0';
+	if (buffer != nullptr)
+		fread(buffer, fileSize, 1, fp);
 
 	fclose(fp);
 	return buffer;
