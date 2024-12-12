@@ -11,10 +11,12 @@ char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 void RenderScreen(void);
 
 //게임 데이터
-#include "GameStage.h"
 #include "MovePattern.h"
 #include "DataParsing.h"
 void InitGame(void);
+
+//게임 로직
+#include "GameStage.h"
 
 //씬 제어
 #include "Scene.h"
@@ -37,13 +39,12 @@ int main(void)
 {
 	timeBeginPeriod(1);
 	DWORD t_ProgramStart = timeGetTime();
-	InitGame();
 	cs_Initial();
+	InitGame();
 
 	while (true)
 	{
-		//buffer_Clear();
-		//cs_ClearScreen();
+		buffer_Clear();
 		
 		//로직부
 		DWORD t_LogicStart = timeGetTime();
@@ -73,14 +74,13 @@ int main(void)
 			scene_ResClear();
 			break;
 		
-		/*
+		
 		case EXIT:
-			Sleep(1500);
 			timeEndPeriod(1);
 			return 0;
-		*/
 
 		default:
+			timeEndPeriod(1);
 			return 0;
 		}
 
@@ -117,7 +117,8 @@ enum GameSetting
 	Data_StageMgr,
 	Data_Player,
 	Data_EnemyMgr,
-	Finish
+	Finish,
+	GameRestart
 };
 
 void InitGame()
@@ -127,7 +128,7 @@ void InitGame()
 	switch (nowSetting)
 	{
 	case Init:
-		currentScene = LOADING;
+		scene_ConvertTo(LOADING);
 		break;
 
 	//SceneMgr 데이터 파싱 -> Scene별 데이터 저장
@@ -151,10 +152,13 @@ void InitGame()
 		break;
 
 	case Finish:
-		currentScene = TITLE;
+		scene_ConvertTo(TITLE);
 		break;
 
+	//Game Restart시  
 	default:
+		currentStage = 0;
+		nowSetting = Finish;
 		return;
 	}
 
@@ -171,6 +175,8 @@ void RenderScreen(void)
 		printf(ScreenBuffer[iBufCnt]);
 	}
 }
+
+
 
 
 ////프레임 제어 예시

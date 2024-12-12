@@ -37,7 +37,7 @@ void player_Control(SHORT inputKey)
 	}
 }
 
-const int posOffset[4][2] = { {0,-1}, {-1,0}, {0,1}, {1,0} }; //←↑→↓ (시계 방향)
+const int posOffset[4][2] = { {-1,0}, {0,-1}, {1,0}, {0,1} }; //←↑→↓ (시계 방향)
 void player_Move(SHORT inputKey)
 {
 	//LEFT:0 | UP:1 | RIGHT:2 | DOWN:3

@@ -427,7 +427,7 @@ void parseData_Stage(int stageNum)
 	const char* filePath = DATA_FILE_PATHS__STAGE[stageNum];
 
 	//파싱할 데이터
-	int* numOfEnemies = &(stageMgr._iEnemyAlive);
+	int* numOfEnemies = &(stageMgr._numOfEnemies);
 	char (*stageData)[dfSCREEN_WIDTH] = stageMgr._stageData;
 
 	char* buffer = file_WriteDataOnBuffer(filePath);

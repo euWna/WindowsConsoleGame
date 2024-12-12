@@ -12,7 +12,7 @@ enum SceneType
 	RES_FAIL,
 	RES_CLEAR,
 	PLAY,
-	//EXIT
+	EXIT
 };
 
 struct SCENE
@@ -22,6 +22,7 @@ struct SCENE
 };
 
 extern SCENE Scene[4];
+void scene_ConvertTo(SceneType scene);
 void scene_PlayGame();
 void scene_Loading();
 void scene_Title();

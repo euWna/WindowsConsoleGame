@@ -5,13 +5,15 @@
 #include "Scene.h"
 #include "Buffer.h"
 
+SCENE Scene[4] = { {TITLE}, {LOADING}, {RES_FAIL}, {RES_CLEAR} };
+
 extern SceneType currentScene;
 extern int currentStage;
-extern void InitGame();
-extern void game_InitStage();
 
-
-SCENE Scene[4] = { {TITLE}, {LOADING}, {RES_FAIL}, {RES_CLEAR} };
+void scene_ConvertTo(SceneType scene)
+{
+	currentScene = scene;
+}
 
 void scene_Title()
 {
@@ -21,17 +23,17 @@ void scene_Title()
 	//입력 - 엔터키 누르면 게임 진입
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
-		currentScene = LOADING;
+		scene_ConvertTo(LOADING);
 		currentStage = 1;
 		return;
 	}
 }
 
-
+extern void InitGame();
+extern void game_InitStage();
 //스테이지 로딩 함수 
 void scene_Loading()
 {
-	//로직 - 화면버퍼 업데이트
 	buffer_UpdateScene(Scene[LOADING].memory);
 
 	//게임 시작시 초기화
@@ -57,7 +59,12 @@ void scene_ResFail()
 	//입력 - 엔터키 : 게임 재시작
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
-		currentScene = TITLE;
+		scene_ConvertTo(TITLE);
+		return;
+	}
+	else if ((GetAsyncKeyState(VK_ESCAPE) & 0x8001))
+	{
+		scene_ConvertTo(EXIT);
 		return;
 	}
 }
@@ -71,25 +78,29 @@ void scene_ResClear()
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
 		currentStage++;
-		currentScene = LOADING;
+		scene_ConvertTo(LOADING);
 		return;
 	}
 }
 
+extern int processFrame();
 void scene_PlayGame()
 {
-	int frameResult = 0; //processFrame();
+	static int frameResult = PLAY; //processFrame();
 
 	switch (frameResult)
 	{
 	case PLAY:
+		frameResult = processFrame();
 		return;
 	case RES_FAIL:
-		currentScene = RES_FAIL;
-		Sleep(2000);
+		frameResult = PLAY;
+		scene_ConvertTo(RES_FAIL);
+		//Sleep(2000);
 		return;
 	case RES_CLEAR:
-		currentScene = RES_CLEAR;
+		frameResult = PLAY;
+		scene_ConvertTo(RES_CLEAR);
 		return;
 	default:
 		return;

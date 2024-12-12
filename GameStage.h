@@ -6,10 +6,12 @@
 
 struct StageMgr
 {
+	int _numOfEnemies;
+	int _enemyAlive;
+	int _playerLife;
 	char _stageData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 	//Enemy _e[MAX_ENEMY];
-	int _iEnemyAlive;
-	int _iPlayerLife;
+
 };
 
 
