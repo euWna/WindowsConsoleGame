@@ -239,27 +239,3 @@ void game_SetGameObjectsOnStage()
 		}
 	}
 }
-
-
-bool game_CheckVisible()
-{
-
-}
-
-
-void game_CheckEnemyAlive()
-{
-
-}
-
-void game_CheckPlayerLife()
-{
-
-}
-
-void game_ShiftStage()
-{
-
-}
-
-

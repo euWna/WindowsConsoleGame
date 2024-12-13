@@ -218,12 +218,6 @@ void parseData_EnemyType(int typeNum, const char* filePath)
 	free(buffer);
 }
 
-struct PatternSign
-{
-	char sign[3];
-};
-
-
 void parseData_MovePatternType(int typeNum, const char* filePath)
 {
 	//파싱할 데이터

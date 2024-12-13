@@ -61,7 +61,6 @@ void enemy_Move(int enemyIdx)
 void enemyShot_Move(int enemyShotIdx)
 {
 	EnemyShot* e = &enemyShot[enemyShotIdx];
-	//stageMgr._enemyLocationData[e->_yPos][e->_xPos] = X;
 	enemyShot[enemyShotIdx]._yPos++;
 
 	if (enemyShot[enemyShotIdx]._yPos >= dfSCREEN_HEIGHT)
@@ -69,8 +68,4 @@ void enemyShot_Move(int enemyShotIdx)
 		enemyShot[enemyShotIdx].isVisible = false;
 		eShotCnt--;
 	}
-	//else
-	//{
-	//	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = ENEMYSHOT;
-	//}
 }
