@@ -32,8 +32,5 @@ extern int pShotCnt;
 void player_Control(SHORT inputKey);
 void player_Move(SHORT inputKey);
 void player_Shoot();
-bool player_GetShot();
-
-bool playerShot_hitEnemy();
 
 #endif

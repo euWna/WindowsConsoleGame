@@ -52,13 +52,9 @@ extern EnemyType EnemyType_Table[MAX_ENEMY_TYPE];
 
 extern int eShotCnt;
 
-
 void enemy_Shoot(int enemyIdx);
 void enemy_GetShot(int enemyIdx);
 void enemy_Move(int enemyIdx);
-
-bool enemyShot_IsVisible(int enemyShotIdx);
 void enemyShot_Move(int enemyShotIdx);
-
 
 #endif

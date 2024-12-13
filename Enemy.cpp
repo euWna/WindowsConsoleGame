@@ -14,11 +14,6 @@ EnemyShot enemyShot[MAX_ENEMY_SHOT];
 
 int eShotCnt;
 
-
-void enemy_Die(int enemyIdx)
-{
-
-}
 void enemy_Shoot(int enemyIdx)
 {
 	if (eShotCnt == MAX_ENEMY_SHOT) return;

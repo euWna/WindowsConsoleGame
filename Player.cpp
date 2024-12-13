@@ -67,8 +67,3 @@ void player_Shoot()
 
 	pShotCnt++;
 }
-
-bool player_GetShot()
-{
-
-}

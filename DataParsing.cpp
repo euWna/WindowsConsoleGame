@@ -29,7 +29,7 @@ void parseData_MovePatternType(int typeNum, const char* filePath);
 void parseData_SceneMgr(void);
 void parseData_Scene(const char* filePath, char memory[][dfSCREEN_WIDTH]);
 void parseData_StageMgr(void);
-void parseData_Stage(const char* filePath);
+void parseData_Stage(int stageNum);
 
 //파싱 보조함수 (파일 스트림)
 char* file_WriteDataOnBuffer(const char* fileName);
