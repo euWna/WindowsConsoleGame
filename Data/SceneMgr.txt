@@ -1,5 +1,6 @@
 Scenes/
 0 Title.txt
 1 Loading.txt
-2 ResFail.txt
-3 ResClear.txt
+2 StageClear.txt
+3 GameOver.txt
+4 GameAllClear.txt

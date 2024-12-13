@@ -66,7 +66,7 @@ int processFrame()
 		if (enemy[eIdx]._xPos == player._xPos
 			&& enemy[eIdx]._yPos == player._yPos)
 		{
-			return RES_FAIL;
+			return GAME_OVER;
 		}
 	}
 
@@ -80,7 +80,7 @@ int processFrame()
 		{
 			stageMgr._playerLife--;
 			if (stageMgr._playerLife <= 0)
-				return RES_FAIL;
+				return GAME_OVER;
 		}
 	}
 
@@ -95,7 +95,7 @@ int processFrame()
 			shotEnemyIdx = stageMgr._enemyLocationData[ps->_yPos][ps->_xPos];
 			enemy_GetShot(shotEnemyIdx);
 			if (stageMgr._enemyAlive <= 0)
-				return RES_CLEAR;
+				return STAGE_CLEAR;
 		}
 	}
 
@@ -239,6 +239,7 @@ void game_SetGameObjectsOnStage()
 		}
 	}
 }
+
 
 bool game_CheckVisible()
 {

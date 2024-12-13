@@ -7,7 +7,7 @@
 #include "ScreenSetting.h"
 #include "Console.h"
 #include "Buffer.h"
-char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+char ScreenBuffer[dfSCREEN_HEIGHT+1][dfSCREEN_WIDTH];
 void RenderScreen(void);
 
 //게임 데이터
@@ -67,12 +67,12 @@ int main(void)
 			//Sleep(1000);
 			break;
 
-		case RES_FAIL:
-			scene_ResFail();
+		case GAME_OVER:
+			scene_GameOver();
 			break;
 		
-		case RES_CLEAR:
-			scene_ResClear();
+		case STAGE_CLEAR:
+			scene_StageClear();
 			break;
 		
 		
@@ -166,6 +166,7 @@ void InitGame()
 	nowSetting++;
 }
 
+const char* ScreenBorderLine = "================================================================================";
 void RenderScreen(void)
 {
 	int iBufCnt;
@@ -175,6 +176,8 @@ void RenderScreen(void)
 		cs_MoveCursor(0, iBufCnt);
 		printf(ScreenBuffer[iBufCnt]);
 	}
+	cs_MoveCursor(0, iBufCnt);
+	printf(ScreenBorderLine);
 }
 
 

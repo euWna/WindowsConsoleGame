@@ -9,7 +9,7 @@
 #include "GameStage.h"
 #include "DataParsing.h"
 
-extern char ScreenBuffer[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
+extern char ScreenBuffer[dfSCREEN_HEIGHT+1][dfSCREEN_WIDTH];
 //extern StageMgr stageMgr;
 
 //파일 경로 및 파일명
@@ -317,7 +317,7 @@ void parseData_SceneMgr(void)
 
 	bufferPtr1 = ++bufferPtr2;
 
-	for (int iCnt = 0; iCnt < NUM_OF_SCENE; iCnt++)
+	for (int iCnt = 0; iCnt < NUM_OF_STATIC_SCENES; iCnt++)
 	{
 		///2. Scene Num
 		while (*bufferPtr2 != ' ') bufferPtr2++;
@@ -338,7 +338,7 @@ void parseData_SceneMgr(void)
 		strcpy_s(sceneFilePath, fileDir);
 		strcat_s(sceneFilePath, fileName);
 
-		parseData_Scene(sceneFilePath, Scene[sceneNum].memory);
+		parseData_Scene(sceneFilePath, staticScene[sceneNum].memory);
 	}
 
 	free(buffer);
