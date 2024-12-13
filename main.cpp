@@ -23,8 +23,9 @@ void InitGame(void);
 SceneType currentScene;
 int currentStage;
 
-//프레임 제어 (50fps)
-const DWORD FRAME_TIME = 20;
+//프레임 제어 (10fps)
+const DWORD FRAME_TIME = 100;
+DWORD t_Elapsed;
 DWORD t_Standard;
 int t_gap;
 //void CheckFPS(void);
@@ -86,7 +87,7 @@ int main(void)
 
 		//프레임 제어
 		///실제 경과 시간 업데이트
-		DWORD t_Elapsed = timeGetTime() - t_ProgramStart;
+		t_Elapsed = timeGetTime() - t_ProgramStart;
 		///프레임 기준 시간 업데이트
 		t_Standard += FRAME_TIME;
 		///경과 시간 & 기준 시간 차이 계산

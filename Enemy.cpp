@@ -9,8 +9,11 @@
 
 EnemyType EnemyType_Table[MAX_ENEMY_TYPE];
 EnemySetting enemySetting;
-Enemy enemy[SCREEN_SIZE];
-EnemyShot enemyShot[SCREEN_SIZE];
+Enemy enemy[MAX_ENEMY];
+EnemyShot enemyShot[MAX_ENEMY_SHOT];
+
+int eShotCnt;
+
 
 void enemy_Die(int enemyIdx)
 {
@@ -18,8 +21,13 @@ void enemy_Die(int enemyIdx)
 }
 void enemy_Shoot(int enemyIdx)
 {
-	Enemy target = enemy[enemyIdx];
-	
+	if (eShotCnt == MAX_ENEMY_SHOT) return;
+	int eIdx = 0;
+	while (enemyShot[eIdx].isVisible) eIdx++;
+	enemyShot[eIdx].isVisible = true;
+	enemyShot[eIdx]._xPos = enemy[eIdx]._xPos;
+	enemyShot[eIdx]._yPos = enemy[eIdx]._yPos;
+	eShotCnt++;
 }
 
 void enemy_GetShot(int enemyIdx)
@@ -31,6 +39,8 @@ void enemy_GetShot(int enemyIdx)
 	if (e->_life == 0)
 	{
 		e->_isDead = true;
+		stageMgr._enemyAlive--;
+		stageMgr._enemyLocationData[e->_yPos][e->_xPos] = MAX_ENEMY;
 	}
 	else
 	{
@@ -40,11 +50,32 @@ void enemy_GetShot(int enemyIdx)
 
 void enemy_Move(int enemyIdx)
 {
-	Enemy_MovePatternQueue* q = &(enemy[enemyIdx]._movePattern);
+	Enemy* e = &(enemy[enemyIdx]);
+	Enemy_MovePatternQueue* q = &(e->_movePattern);
 	int moveIdx = q->_moveIdx;
 	MoveOffset* pattern = q->_type->_pattern;
 
-	enemy[enemyIdx]._xPos += pattern[moveIdx]._x;
-	enemy[enemyIdx]._yPos += pattern[moveIdx]._y;
+	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = MAX_ENEMY;
+	e->_xPos += pattern[moveIdx]._x;
+	e->_yPos += pattern[moveIdx]._y;
+	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = enemyIdx;
+
 	q->_moveIdx = (moveIdx + 1)%(q->_type->_length);
+}
+
+void enemyShot_Move(int enemyShotIdx)
+{
+	EnemyShot* e = &enemyShot[enemyShotIdx];
+	//stageMgr._enemyLocationData[e->_yPos][e->_xPos] = X;
+	enemyShot[enemyShotIdx]._yPos++;
+
+	if (enemyShot[enemyShotIdx]._yPos >= dfSCREEN_HEIGHT)
+	{
+		enemyShot[enemyShotIdx].isVisible = false;
+		eShotCnt--;
+	}
+	//else
+	//{
+	//	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = ENEMYSHOT;
+	//}
 }

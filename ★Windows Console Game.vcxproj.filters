@@ -16,20 +16,20 @@
     <Filter Include="소스 파일\sample">
       <UniqueIdentifier>{eec434d9-5035-4e75-89cb-303a754241fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\GameObjects">
+      <UniqueIdentifier>{95782be2-509b-46d7-acc1-b7bc1ddc7705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Data">
+      <UniqueIdentifier>{0ecf39d3-d643-484b-b151-2a22fe1bef8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\System">
+      <UniqueIdentifier>{80be5919-f583-49c2-8e05-0510f1b454ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameLogic">
+      <UniqueIdentifier>{4b067aa8-a5ea-4bed-a962-38eea67f20f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Buffer.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="sample\Console_sample.cpp">
       <Filter>소스 파일\sample</Filter>
     </ClCompile>
@@ -37,19 +37,31 @@
       <Filter>소스 파일\sample</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStage.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="DataParsing.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStage.cpp">
+      <Filter>소스 파일\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="MovePattern.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,31 +69,31 @@
       <Filter>소스 파일\sample</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ScreenSetting.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="DataParsing.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>소스 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenSetting.h">
+      <Filter>소스 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>소스 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>소스 파일\System</Filter>
     </ClInclude>
     <ClInclude Include="GameStage.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="MovePattern.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

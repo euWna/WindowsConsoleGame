@@ -2,9 +2,6 @@
 
 #include "ScreenSetting.h"
 #include "Player.h"
-//#include "MovePattern.h"
-//#include "Enemy.h"
-//#include "GameObjects.h"
 #include "Buffer.h"
 
 #define X 0
@@ -12,7 +9,9 @@
 
 Player player;
 PlayerSetting playerSetting;
-PlayerShot playerShot[SCREEN_SIZE];
+PlayerShot playerShot[MAX_PLAYER_SHOT];
+
+int pShotCnt;
 
 void player_Control(SHORT inputKey)
 {
@@ -58,7 +57,15 @@ void player_Move(SHORT inputKey)
 
 void player_Shoot()
 {
+	if (pShotCnt == MAX_PLAYER_SHOT) return;
 
+	int psIdx = 0;
+	while (playerShot[psIdx].isVisible) psIdx++;
+	playerShot[psIdx].isVisible = true;
+	playerShot[psIdx]._xPos = player._xPos;
+	playerShot[psIdx]._yPos = player._yPos;
+
+	pShotCnt++;
 }
 
 bool player_GetShot()
