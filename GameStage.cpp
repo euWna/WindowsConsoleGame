@@ -45,14 +45,14 @@ int processFrame()
 	}
 
 	///Enemy 이동
-	for (eIdx = 0; eIdx < stageMgr._numOfEnemies; eIdx++)
+	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
 		if (enemy[eIdx]._isDead) continue;
 		else enemy_Move(eIdx);
 	}
 
 	///EnemyShot 발사 및 이동
-	for (eIdx = 0; eIdx < stageMgr._numOfEnemies; eIdx++)
+	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
 		if (t_Standard % (enemy[eIdx]._shotCoolTime * 1000) == 0)
 			enemy_Shoot(eIdx);
@@ -66,7 +66,7 @@ int processFrame()
 
 	//2. 충돌 처리 및 게임 클리어/오버 판단
 	///Player & Enemy 충돌 여부 (= 게임 오버 여부) 판정
-	for (eIdx = 0; eIdx < stageMgr._numOfEnemies; eIdx++)
+	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
 		if (enemy[eIdx]._isDead) continue;
 
@@ -125,7 +125,7 @@ int processFrame()
 	}
 
 	//enemy
-	for (eIdx = 0; eIdx < stageMgr._numOfEnemies; eIdx++)
+	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
 		if (enemy[eIdx]._isDead) continue;
 
@@ -246,6 +246,6 @@ void stage_InitGameObjects()
 	pShotCnt = 0;
 
 	///stage 변수 초기화
-	stageMgr._enemyAlive = stageMgr._numOfEnemies;
+	stageMgr._enemyAlive = stageMgr._enemyTotal;
 	stageMgr._playerLife = playerSetting._maxLife;
 }

@@ -259,7 +259,7 @@ void parseData_Stage(int stageNum)
 {
 	//파싱할 데이터
 	///1. 등장 Enemy 총 개수
-	int* numOfEnemies = &(stageMgr._numOfEnemies);
+	int* numOfEnemies = &(stageMgr._enemyTotal);
 	///2. stage 스크린 데이터
 	char(*stageData)[dfSCREEN_WIDTH] = stageMgr._stageData;
 
