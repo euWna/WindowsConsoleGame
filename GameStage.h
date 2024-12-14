@@ -12,7 +12,7 @@ struct StageMgr
 	int _enemyTotal;
 	int _enemyAlive;
 
-	int _enemyLocationData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH] = { -1 }; //각 좌표에 위치한 enemy의 index를 저장하는 배열
+	int _enemyLocationData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH]; //각 좌표에 위치한 enemy의 index를 저장하는 배열
 	char _stageData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 };
 

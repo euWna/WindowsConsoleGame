@@ -66,12 +66,12 @@ SceneType processFrame(SHORT inputKey)
 	///PlayerShot 이동
 	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
 	{
-		if (!playerShot[psIdx]._isShot) continue;
+		if (playerShot[psIdx]._isShot == false) continue;
 		else
 		{
 			if (playerShot_Move(&playerShot[psIdx]) == false)
 			{
-				pShotCnt--;
+ 				pShotCnt--;
 			}
 		}
 	}
@@ -106,7 +106,7 @@ SceneType processFrame(SHORT inputKey)
 	///EnemyShot 이동
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
-		if (!enemyShot[esIdx]._isShot) continue;
+		if (enemyShot[esIdx]._isShot == false) continue;
 		else
 		{
 			if (enemyShot_Move(&enemyShot[esIdx]) == false)
@@ -134,7 +134,7 @@ SceneType processFrame(SHORT inputKey)
 	///Player & EnemyShot 충돌 & 게임 오버 판정
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
-		if (!enemyShot[esIdx]._isShot) continue;
+		if (enemyShot[esIdx]._isShot == false) continue;
 
 		if (enemyShot[esIdx]._xPos == player._xPos
 			&& enemyShot[esIdx]._yPos == player._yPos)
@@ -151,12 +151,13 @@ SceneType processFrame(SHORT inputKey)
 	///Enemy & PlayerShot 충돌 여부 & 게임 클리어 판정
 	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
 	{
+		if (playerShot[psIdx]._isShot == false) continue;
 		PlayerShot* ps = &playerShot[psIdx];
 		int shotEnemyIdx;
 
 		if (stageMgr._enemyLocationData[ps->_yPos][ps->_xPos] != EMPTY)
 		{
-			playerShot[psIdx]._isShot = false;
+			ps->_isShot = false;
 			pShotCnt--;
 
 			shotEnemyIdx = stageMgr._enemyLocationData[ps->_yPos][ps->_xPos];
@@ -167,8 +168,8 @@ SceneType processFrame(SHORT inputKey)
 				stageMgr._enemyLocationData[enemy[shotEnemyIdx]._yPos][enemy[shotEnemyIdx]._xPos] = EMPTY;
 			}
 
-			if (stageMgr._enemyAlive == 0)
-				return STAGE_CLEAR;
+			if (stageMgr._enemyAlive == 0) 
+ 				return STAGE_CLEAR;
 		}
 	}
 
@@ -177,7 +178,7 @@ SceneType processFrame(SHORT inputKey)
 	//enemy shot
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
-		if (!enemyShot[esIdx]._isShot) continue;
+		if (enemyShot[esIdx]._isShot == false) continue;
 
 		buffer_DrawSprite(enemyShot[esIdx]._xPos, enemyShot[esIdx]._yPos, enemySetting._shotSprite);
 	}
@@ -193,7 +194,7 @@ SceneType processFrame(SHORT inputKey)
 	//player shot
 	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
 	{
-		if (!playerShot[psIdx]._isShot) continue;
+		if (playerShot[psIdx]._isShot == false) continue;
 		
 		buffer_DrawSprite(playerShot[psIdx]._xPos, playerShot[psIdx]._yPos, playerSetting._shotSprite);
 	}
@@ -322,4 +323,5 @@ void stage_InitStageMgr()
 	///stage 변수 초기화
 	stageMgr._enemyAlive = stageMgr._enemyTotal;
 	stageMgr._playerLife = playerSetting._maxLife;
+	memset(stageMgr._enemyLocationData, EMPTY, sizeof(stageMgr._enemyLocationData));
 }
