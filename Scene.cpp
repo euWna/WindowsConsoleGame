@@ -149,11 +149,14 @@ void scene_GameAllClear()
 	}
 }
 
-extern SceneType processFrame(void);
+extern SceneType processFrame(SHORT inputKey);
 void scene_PlayGame()
 {
-	SceneType frameResult = processFrame();
+	//입력
+	SHORT inputKey = cs_GetKeyInput();
 
+	//로직
+	SceneType frameResult = processFrame(inputKey);
 	switch (frameResult)
 	{
 	case PLAY:

@@ -8,11 +8,11 @@
 #include "Scene.h"
 #include "GameStage.h"
 
-
 StageMgr stageMgr;
 int currentStage;
 
 Player player;
+
 PlayerShot playerShot[MAX_PLAYER_SHOT];
 Enemy enemy[MAX_ENEMY];
 EnemyShot enemyShot[MAX_ENEMY_SHOT];
@@ -22,50 +22,103 @@ int eShotCnt;
 
 extern DWORD t_Standard; //enemyShot 발사 쿨타임 계산용
 
-SceneType processFrame()
+//로직
+//1. Player 제어
+//2. 오브젝트 이동
+//3. 오브젝트간 충돌 처리 및 게임 클리어/오버 판단
+SceneType processFrame(SHORT inputKey)
 {
-	/*입력*/
-	//Player 조작키 입력
-	int inputKey = cs_GetKeyInput();
-
-
-	/*로직*/
+	//게임 오브젝트 배열 인덱스
+	int psIdx;
 	int eIdx;
 	int esIdx;
-	int psIdx;
 
-	//1. 오브젝트 이동
-	///Player 이동 또는 발사
-	player_Control(inputKey);
+	//1. Player 제어
+	switch (inputKey)
+	{
+	///PlayerShot 발사
+	case VK_SPACE:
+		if (pShotCnt < MAX_PLAYER_SHOT)
+		{
+			psIdx = 0;
+			while (playerShot[psIdx]._isShot) psIdx++;
+			player_Shoot(&playerShot[psIdx]);
+			pShotCnt++;
+		}
+		break;
 
-	//PlayerShot 발사 및 이동
+	///Player 이동
+	case VK_LEFT:
+		//[[fallthrough]]
+	case VK_UP:
+		//[[fallthrough]]
+	case VK_RIGHT:
+		//[[fallthrough]]
+	case VK_DOWN:
+		player_Move(inputKey);
+		break;
+
+	default:
+		break;
+	}
+
+	//2. 오브젝트 이동
+	///PlayerShot 이동
 	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
 	{
 		if (!playerShot[psIdx]._isShot) continue;
-		else playerShot[psIdx]._yPos--;
+		else
+		{
+			if (playerShot_Move(&playerShot[psIdx]) == false)
+			{
+				pShotCnt--;
+			}
+		}
 	}
 
 	///Enemy 이동
 	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
 		if (enemy[eIdx]._isDead) continue;
-		else enemy_Move(eIdx);
+		else
+		{
+			stageMgr._enemyLocationData[enemy[eIdx]._yPos][enemy[eIdx]._xPos] = EMPTY;
+			enemy_Move(&enemy[eIdx]);
+			stageMgr._enemyLocationData[enemy[eIdx]._yPos][enemy[eIdx]._xPos] = eIdx;
+		}
 	}
 
-	///EnemyShot 발사 및 이동
-	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
+	///Enemy 발사
+	if (eShotCnt < MAX_ENEMY_SHOT)
 	{
-		if (t_Standard % (enemy[eIdx]._shotCoolTime * 1000) == 0)
-			enemy_Shoot(eIdx);
+		for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
+		{
+			if (t_Standard % (enemy[eIdx]._shotCoolTime * 1000) == 0)
+			{
+				esIdx = 0;
+				while (enemyShot[esIdx]._isShot) esIdx++;
+				enemy_Shoot(&enemy[eIdx], &enemyShot[esIdx]);
+				eShotCnt++;
+			}
+		}
 	}
+
+	///EnemyShot 이동
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
 		if (!enemyShot[esIdx]._isShot) continue;
-		else enemyShot_Move(esIdx);
+		else
+		{
+			if (enemyShot_Move(&enemyShot[esIdx]) == false)
+			{
+				eShotCnt--;
+			}
+		}
+			
 	}
 
 
-	//2. 충돌 처리 및 게임 클리어/오버 판단
+	//3. 충돌 처리 및 게임 클리어/오버 판단
 	///Player & Enemy 충돌 여부 (= 게임 오버 여부) 판정
 	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
@@ -84,10 +137,13 @@ SceneType processFrame()
 		if (!enemyShot[esIdx]._isShot) continue;
 
 		if (enemyShot[esIdx]._xPos == player._xPos
-			&& enemy[eIdx]._yPos == player._yPos)
+			&& enemyShot[esIdx]._yPos == player._yPos)
 		{
 			stageMgr._playerLife--;
-			if (stageMgr._playerLife <= 0)
+			enemyShot[esIdx]._isShot = false;
+			eShotCnt--;
+
+			if (stageMgr._playerLife == 0)
 				return GAME_OVER;
 		}
 	}
@@ -100,9 +156,18 @@ SceneType processFrame()
 
 		if (stageMgr._enemyLocationData[ps->_yPos][ps->_xPos] != EMPTY)
 		{
+			playerShot[psIdx]._isShot = false;
+			pShotCnt--;
+
 			shotEnemyIdx = stageMgr._enemyLocationData[ps->_yPos][ps->_xPos];
-			enemy_GetShot(shotEnemyIdx);
-			if (stageMgr._enemyAlive <= 0)
+			bool eIsDead = enemy_GetShot(&enemy[shotEnemyIdx]);
+			if (eIsDead)
+			{
+				stageMgr._enemyAlive--;
+				stageMgr._enemyLocationData[enemy[shotEnemyIdx]._yPos][enemy[shotEnemyIdx]._xPos] = EMPTY;
+			}
+
+			if (stageMgr._enemyAlive == 0)
 				return STAGE_CLEAR;
 		}
 	}
@@ -139,11 +204,6 @@ SceneType processFrame()
 	return PLAY;
 }
 
-//플레이어
-
-extern SceneType currentScene;
-extern void parseData_Stage(int stageNum);
-void stage_ParseScreen();
 
 enum StageSetting
 {
@@ -153,6 +213,10 @@ enum StageSetting
 	InitGameObjects,
 	Finish
 };
+
+extern void parseData_Stage(int stageNum);
+void stage_ParseScreen();
+void stage_InitGameObjects();
 
 void stage_InitStage()
 {
@@ -191,9 +255,9 @@ void stage_ParseScreen()
 {
 	char* c;
 
+	Enemy* e;
 	int eTypeNum;
 	int eCnt = 0;
-	Enemy* e = &(enemy[eCnt]);
 
 	for (int y = 0; y < 24; y++)
 	{
@@ -206,6 +270,10 @@ void stage_ParseScreen()
 			{
 				stageMgr._stageData[y][x] = ' ';
 			}
+			else if (*c == '\0')
+			{
+				continue;
+			}
 			//Player
 			else if (*c == '0')
 			{
@@ -213,14 +281,11 @@ void stage_ParseScreen()
 				player._xPos = x;
 				player._yPos = y;
 			}
-			else if (*c == '\0')
-			{
-				continue;
-			}
 			//Enemy
 			else
 			{
-				stageMgr._enemyLocationData[y][x] = eCnt;
+				e = &(enemy[eCnt]);
+
 				eTypeNum = *c - '0';
 				e->_xPos = x;
 				e->_yPos = y;
@@ -229,7 +294,7 @@ void stage_ParseScreen()
 				e->_movePattern._type = &MovePattern_Table[EnemyType_Table[eTypeNum]._movePatternTypeNum];
 				e->_sprite = *c;
 
-				e = &(enemy[++eCnt]);
+				eCnt++;
 			}
 		}
 	}

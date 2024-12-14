@@ -7,31 +7,8 @@
 #define Y 1
 
 PlayerSetting playerSetting;
-
-void player_Control(SHORT inputKey)
-{
-	switch (inputKey)
-	{
-	case VK_SPACE:
-		player_Shoot();
-		return;
-
-	case VK_LEFT: 
-		//[[fallthrough]]
-	case VK_UP: 
-		//[[fallthrough]]
-	case VK_RIGHT: 
-		//[[fallthrough]]
-	case VK_DOWN: 
-		player_Move(inputKey);
-		return;
-
-	default:
-		return;
-	}
-}
-
 const int posOffset[4][2] = { {-1,0}, {0,-1}, {1,0}, {0,1} }; //←↑→↓ (시계 방향)
+
 void player_Move(SHORT inputKey)
 {
 	//LEFT:0 | UP:1 | RIGHT:2 | DOWN:3
@@ -50,16 +27,26 @@ void player_Move(SHORT inputKey)
 	}
 }
 
-void player_Shoot()
+void player_Shoot(PlayerShot* pShot)
 {
-	if (pShotCnt == MAX_PLAYER_SHOT) return;
-
-	int psIdx = 0;
-	while (playerShot[psIdx]._isShot) psIdx++;
-	playerShot[psIdx]._isShot = true;
-	playerShot[psIdx]._xPos = player._xPos;
-	playerShot[psIdx]._yPos = player._yPos;
-
-	pShotCnt++;
+	pShot->_isShot = true;
+	pShot->_xPos = player._xPos;
+	pShot->_yPos = player._yPos;
 }
 
+
+bool playerShot_Move(PlayerShot* pShot)
+{
+	pShot->_yPos--;
+
+	if (pShot->_yPos >= 0)
+	{
+		return true;
+	}
+	else
+	{
+		pShot->_isShot = false;
+		return false;
+	}
+
+}

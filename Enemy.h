@@ -46,15 +46,13 @@ struct EnemyShot
 };
 
 extern EnemySetting enemySetting;
-extern Enemy enemy[MAX_ENEMY];
-extern EnemyShot enemyShot[MAX_ENEMY_SHOT];
 extern EnemyType EnemyType_Table[MAX_ENEMY_TYPE];
 
 extern int eShotCnt;
 
-void enemy_Shoot(int enemyIdx);
-void enemy_GetShot(int enemyIdx);
-void enemy_Move(int enemyIdx);
-void enemyShot_Move(int enemyShotIdx);
+void enemy_Move(Enemy* e);
+void enemy_Shoot(Enemy* e, EnemyShot* eShot);
+bool enemy_GetShot(Enemy* e);
+bool enemyShot_Move(EnemyShot* eShot);
 
 #endif

@@ -26,11 +26,10 @@ struct PlayerShot
 
 extern Player player;
 extern PlayerSetting playerSetting;
-extern PlayerShot playerShot[MAX_PLAYER_SHOT];
-extern int pShotCnt;
 
 void player_Control(SHORT inputKey);
 void player_Move(SHORT inputKey);
-void player_Shoot();
+void player_Shoot(PlayerShot* pShot);
+bool playerShot_Move(PlayerShot* pShot);
 
 #endif
