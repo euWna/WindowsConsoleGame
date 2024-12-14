@@ -10,6 +10,7 @@
 
 
 StageMgr stageMgr;
+int currentStage;
 
 Player player;
 PlayerShot playerShot[MAX_PLAYER_SHOT];
@@ -19,20 +20,20 @@ EnemyShot enemyShot[MAX_ENEMY_SHOT];
 int pShotCnt;
 int eShotCnt;
 
-extern DWORD t_Standard;
+extern DWORD t_Standard; //enemyShot 발사 쿨타임 계산용
 
-int processFrame()
+SceneType processFrame()
 {
-	int eIdx;
-	int esIdx;
-	int psIdx;
-
 	/*입력*/
 	//Player 조작키 입력
 	int inputKey = cs_GetKeyInput();
 
 
 	/*로직*/
+	int eIdx;
+	int esIdx;
+	int psIdx;
+
 	//1. 오브젝트 이동
 	///Player 이동 또는 발사
 	player_Control(inputKey);
@@ -116,14 +117,6 @@ int processFrame()
 		buffer_DrawSprite(enemyShot[esIdx]._xPos, enemyShot[esIdx]._yPos, enemySetting._shotSprite);
 	}
 
-	//player shot
-	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
-	{
-		if (!playerShot[psIdx].isVisible) continue;
-		
-		buffer_DrawSprite(playerShot[psIdx]._xPos, playerShot[psIdx]._yPos, playerSetting._shotSprite);
-	}
-
 	//enemy
 	for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 	{
@@ -132,17 +125,23 @@ int processFrame()
 		buffer_DrawSprite(enemy[eIdx]._xPos, enemy[eIdx]._yPos, enemy[eIdx]._sprite);
 	}
 
+	//player shot
+	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
+	{
+		if (!playerShot[psIdx].isVisible) continue;
+		
+		buffer_DrawSprite(playerShot[psIdx]._xPos, playerShot[psIdx]._yPos, playerSetting._shotSprite);
+	}
+
 	//player
 	buffer_DrawSprite(player._xPos, player._yPos, playerSetting._sprite);
 
 	return PLAY;
-
 }
 
 //플레이어
 
 extern SceneType currentScene;
-extern int currentStage;
 extern void parseData_Stage(int stageNum);
 void stage_ParseScreen();
 
@@ -178,7 +177,7 @@ void stage_InitStage()
 
 	case Finish:
 		buffer_UpdateScene(stageMgr._stageData);
-		scene_ConvertTo(PLAY);
+		scene_SwitchTo(PLAY);
 		nowSetting = Init;
 		break;
 

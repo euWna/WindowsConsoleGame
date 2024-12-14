@@ -7,7 +7,7 @@
 
 enum SceneType
 {
-	//Static Sceness
+	//Static Scenes
 	TITLE = 0,
 	LOADING = 1,
 	STAGE_CLEAR = 2,
@@ -28,7 +28,9 @@ struct StaticScene
 };
 
 extern StaticScene staticScene[NUM_OF_STATIC_SCENES];
-void scene_ConvertTo(SceneType scene);
+extern SceneType currentScene;
+
+void scene_SwitchTo(SceneType scene);
 void scene_Title();
 void scene_Loading();
 void scene_StageClear();

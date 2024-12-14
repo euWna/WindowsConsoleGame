@@ -15,13 +15,11 @@ void RenderScreen(void);
 enum GameSetting;
 void LoadGameData(void);
 
-//게임 로직
-#include "GameStage.h"
-
 //씬 제어
 #include "Scene.h"
-SceneType currentScene;
-int currentStage;
+
+//게임 로직
+#include "GameStage.h"
 
 //프레임 제어 (10fps)
 const DWORD FRAME_TIME = 100;
@@ -108,9 +106,8 @@ int main(void)
 			continue;
 		}
 
-		//렌더부
+		//출력부
 		RenderScreen();
-		//CheckFPS();
 	}
 }
 
@@ -131,7 +128,7 @@ void LoadGameData(void)
 	switch (now_loading)
 	{
 	case Init:
-		scene_ConvertTo(LOADING);
+		scene_SwitchTo(LOADING);
 		break;
 
 	//SceneMgr 데이터 파싱 -> Scene별 데이터 저장
@@ -155,7 +152,7 @@ void LoadGameData(void)
 		break;
 
 	case Finish:
-		scene_ConvertTo(TITLE);
+		scene_SwitchTo(TITLE);
 		break;
 
 	//Game Restart시  

@@ -17,5 +17,7 @@ struct StageMgr
 };
 
 extern StageMgr stageMgr;
+extern int currentStage;
+
 
 #endif

@@ -1,41 +1,58 @@
 #include <stdio.h>
 #include <windows.h>
 
+#include "Console.h"
 #include "Buffer.h"
 #include "Scene.h"
+#include "GameStage.h"
 
 StaticScene staticScene[NUM_OF_STATIC_SCENES] 
 = { {TITLE}, {LOADING}, {STAGE_CLEAR} ,{GAME_OVER}, {GAME_ALLCLEAR} };
 
+SceneType currentScene;
 
-extern SceneType currentScene;
-extern int currentStage;
-void scene_ConvertTo(SceneType scene)
+void scene_SwitchTo(SceneType scene)
 {
 	currentScene = scene;
 }
 
 void scene_Title()
 {
-	//로직 - 화면버퍼 업데이트
-	buffer_UpdateScene(staticScene[TITLE].memory);
-		
-	//입력 - 엔터키 누르면 게임 시작
-	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
+	//입력
+	int inputKey = cs_GetKeyInput();
+
+	//로직	
+	switch (inputKey)
 	{
-		scene_ConvertTo(LOADING);
+	///엔터키 입력 -> 게임 시작
+	case VK_RETURN:
 		currentStage = 1;
-		return;
+		scene_SwitchTo(LOADING);
+		break;
+
+	///ESC 입력 -> 게임 종료
+	case VK_ESCAPE:
+		scene_SwitchTo(EXIT);
+		break;
+
+	default:
+		break;
 	}
+
+	//출력 -> Title 화면 업데이트
+	buffer_UpdateScene(staticScene[TITLE].memory);
 }
 
+
+
+//스테이지 로딩 함수 
 extern void LoadGameData(void);
 extern void stage_InitStage(void);
-//스테이지 로딩 함수 
 void scene_Loading()
 {
-	buffer_UpdateScene(staticScene[LOADING].memory);
+	//입력 x
 
+	//로직
 	//게임 시작시 초기화
 	if (currentStage == 0)
 	{
@@ -47,84 +64,116 @@ void scene_Loading()
 	{
 		stage_InitStage();
 	}
+	 
+	//출력 -> Loading 화면 업데이트
+	buffer_UpdateScene(staticScene[LOADING].memory);
 
 	return;
 }
 
 void scene_StageClear()
 {
-	//로직 - 화면버퍼 업데이트
-	buffer_UpdateScene(staticScene[STAGE_CLEAR].memory);
+	//입력
+	int inputKey = cs_GetKeyInput();
 
-	//입력 - 엔터키 : 다음 스테이지
-	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
+	//로직	
+	switch (inputKey)
 	{
+	///엔터키 입력 -> 다음 스테이지
+	case VK_RETURN:
 		currentStage++;
-		scene_ConvertTo(LOADING);
-		return;
+		scene_SwitchTo(LOADING);
+		break;
+
+	///ESC 입력 -> 게임 종료
+	case VK_ESCAPE:
+		scene_SwitchTo(EXIT);
+		break;
+
+	default:
+		break;
 	}
+
+	//출력 -> Stage Clear 화면 업데이트
+	buffer_UpdateScene(staticScene[STAGE_CLEAR].memory);
 }
 
 void scene_GameOver()
 {
-	//로직 - 화면버퍼 업데이트
-	buffer_UpdateScene(staticScene[GAME_OVER].memory);
-	
 	//입력
-	///엔터키 : 게임 재시작
-	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
+	int inputKey = cs_GetKeyInput();
+
+	//로직	
+	switch (inputKey)
 	{
-		scene_ConvertTo(TITLE);
-		return;
+	///엔터키 입력 -> 게임 재시작
+	case VK_RETURN:
+		currentStage = 0;
+		scene_SwitchTo(TITLE);
+		break;
+
+	///ESC 입력 -> 게임 종료
+	case VK_ESCAPE:
+		scene_SwitchTo(EXIT);
+		break;
+
+	default:
+		break;
 	}
-	///ESC키 : 게임 종료
-	else if ((GetAsyncKeyState(VK_ESCAPE) & 0x8001))
-	{
-		scene_ConvertTo(EXIT);
-		return;
-	}
+
+	//출력 -> Game Over 화면 업데이트
+	buffer_UpdateScene(staticScene[GAME_OVER].memory);
 }
 
 void scene_GameAllClear()
 {
-	//로직 - 화면버퍼 업데이트
-	buffer_UpdateScene(staticScene[GAME_OVER].memory);
-
 	//입력
-	///엔터키 : 게임 재시작
-	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
+	int inputKey = cs_GetKeyInput();
+
+	//로직	
+	switch (inputKey)
 	{
-		scene_ConvertTo(TITLE);
+	///엔터키 입력 -> 게임 재시작
+	case VK_RETURN:
+		currentStage = 0;
+		scene_SwitchTo(TITLE);
 		return;
-	}
-	///ESC키 : 게임 종료
-	else if ((GetAsyncKeyState(VK_ESCAPE) & 0x8001))
-	{
-		scene_ConvertTo(EXIT);
-		return;
+
+	///ESC 입력 -> 게임 종료
+	case VK_ESCAPE:
+		scene_SwitchTo(EXIT);
+		break;
+
+	default:
+		break;
 	}
 }
 
-
-extern int processFrame();
+extern SceneType processFrame(void);
 void scene_PlayGame()
 {
-	static int frameResult = PLAY; //processFrame();
+	SceneType frameResult = processFrame();
 
 	switch (frameResult)
 	{
 	case PLAY:
-		frameResult = processFrame();
 		return;
+
 	case GAME_OVER:
-		frameResult = PLAY;
-		scene_ConvertTo(GAME_OVER);
-		//Sleep(2000);
+		scene_SwitchTo(GAME_OVER);
 		return;
+
 	case STAGE_CLEAR:
-		frameResult = PLAY;
-		scene_ConvertTo(STAGE_CLEAR);
+		if (currentStage == MAX_STAGE)
+		{
+			scene_SwitchTo(GAME_ALLCLEAR);
+		}
+		else
+		{
+			scene_SwitchTo(STAGE_CLEAR);
+		}
 		return;
+
 	default:
 		return;
 	}

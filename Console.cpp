@@ -74,8 +74,8 @@ void cs_ClearScreen(void)
 
 //-------------------------------------------------------------
 // 콘솔에서 키보드 입력을 받는다.
-// 게임의 조작키인 방향키(←↑→↓)와 Space바 입력만 처리한다.
-//
+// - player 조작 키: 방향키(←↑→↓), Space바
+// - 씬 제어 키 : Enter(RETURN), ESC
 //-------------------------------------------------------------
 SHORT cs_GetKeyInput(void)
 {
@@ -99,6 +99,14 @@ SHORT cs_GetKeyInput(void)
 	else if (GetAsyncKeyState(VK_SPACE) && 0x8001)
 	{
 		inputKey = VK_SPACE;
+	}
+	else if (GetAsyncKeyState(VK_RETURN) && 0x8001)
+	{
+		inputKey = VK_RETURN;
+	}
+	else if (GetAsyncKeyState(VK_ESCAPE) && 0x8001)
+	{
+		inputKey = VK_ESCAPE;
 	}
 
 	return inputKey;
