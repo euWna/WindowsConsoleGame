@@ -93,6 +93,7 @@ SceneType processFrame(SHORT inputKey)
 	{
 		for (eIdx = 0; eIdx < stageMgr._enemyTotal; eIdx++)
 		{
+			if (enemy[eIdx]._isDead) continue;
 			if (t_Standard % (enemy[eIdx]._shotCoolTime * 1000) == 0)
 			{
 				esIdx = 0;
