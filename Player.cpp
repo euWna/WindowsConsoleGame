@@ -6,11 +6,7 @@
 #define X 0
 #define Y 1
 
-Player player;
 PlayerSetting playerSetting;
-PlayerShot playerShot[MAX_PLAYER_SHOT];
-
-int pShotCnt;
 
 void player_Control(SHORT inputKey)
 {

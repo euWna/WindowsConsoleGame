@@ -12,9 +12,7 @@ EnemySetting enemySetting;
 Enemy enemy[MAX_ENEMY];
 EnemyShot enemyShot[MAX_ENEMY_SHOT];
 
-int eShotCnt;
-
-void enemy_Shoot(int enemyIdx)
+void enemy_Shoot(int eIdx)
 {
 	if (eShotCnt == MAX_ENEMY_SHOT) return;
 	int eIdx = 0;

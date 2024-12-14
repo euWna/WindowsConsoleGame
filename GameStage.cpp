@@ -11,6 +11,14 @@
 
 StageMgr stageMgr;
 
+Player player;
+PlayerShot playerShot[MAX_PLAYER_SHOT];
+Enemy enemy[MAX_ENEMY];
+EnemyShot enemyShot[MAX_ENEMY_SHOT];
+
+int pShotCnt;
+int eShotCnt;
+
 extern DWORD t_Standard;
 
 int processFrame()
