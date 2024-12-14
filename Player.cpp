@@ -55,10 +55,11 @@ void player_Shoot()
 	if (pShotCnt == MAX_PLAYER_SHOT) return;
 
 	int psIdx = 0;
-	while (playerShot[psIdx].isVisible) psIdx++;
-	playerShot[psIdx].isVisible = true;
+	while (playerShot[psIdx]._isShot) psIdx++;
+	playerShot[psIdx]._isShot = true;
 	playerShot[psIdx]._xPos = player._xPos;
 	playerShot[psIdx]._yPos = player._yPos;
 
 	pShotCnt++;
 }
+

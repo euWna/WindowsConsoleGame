@@ -42,7 +42,7 @@ struct EnemyShot
 	//생성시 pos player 및 enemy 위치에 ypos + 1 로 초기화, 직후 한칸 앞으로
 	int _xPos;
 	int _yPos;
-	bool isVisible = false;
+	bool _isShot = false;
 };
 
 extern EnemySetting enemySetting;

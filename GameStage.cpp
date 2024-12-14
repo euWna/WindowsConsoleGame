@@ -41,7 +41,7 @@ SceneType processFrame()
 	//PlayerShot 발사 및 이동
 	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
 	{
-		if (!playerShot[psIdx].isVisible) continue;
+		if (!playerShot[psIdx]._isShot) continue;
 		else playerShot[psIdx]._yPos--;
 	}
 
@@ -60,7 +60,7 @@ SceneType processFrame()
 	}
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
-		if (!enemyShot[esIdx].isVisible) continue;
+		if (!enemyShot[esIdx]._isShot) continue;
 		else enemyShot_Move(esIdx);
 	}
 
@@ -81,7 +81,7 @@ SceneType processFrame()
 	///Player & EnemyShot 충돌 & 게임 오버 판정
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
-		if (!enemyShot[esIdx].isVisible) continue;
+		if (!enemyShot[esIdx]._isShot) continue;
 
 		if (enemyShot[esIdx]._xPos == player._xPos
 			&& enemy[eIdx]._yPos == player._yPos)
@@ -112,7 +112,7 @@ SceneType processFrame()
 	//enemy shot
 	for (esIdx = 0; esIdx < MAX_ENEMY_SHOT; esIdx++)
 	{
-		if (!enemyShot[esIdx].isVisible) continue;
+		if (!enemyShot[esIdx]._isShot) continue;
 
 		buffer_DrawSprite(enemyShot[esIdx]._xPos, enemyShot[esIdx]._yPos, enemySetting._shotSprite);
 	}
@@ -128,7 +128,7 @@ SceneType processFrame()
 	//player shot
 	for (psIdx = 0; psIdx < MAX_PLAYER_SHOT; psIdx++)
 	{
-		if (!playerShot[psIdx].isVisible) continue;
+		if (!playerShot[psIdx]._isShot) continue;
 		
 		buffer_DrawSprite(playerShot[psIdx]._xPos, playerShot[psIdx]._yPos, playerSetting._shotSprite);
 	}

@@ -21,7 +21,7 @@ struct PlayerShot
 {
 	int _xPos;
 	int _yPos;
-	bool isVisible = false;
+	bool _isShot = false;
 };
 
 extern Player player;
