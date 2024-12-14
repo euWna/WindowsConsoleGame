@@ -1,6 +1,6 @@
 #include "MovePattern.h"
 
-const MoveSign MoveSign_Table[8] =
+const MoveSign MoveSign_ConversionTable[8] =
 {
 	{ 'ก็',  {-1, 0} },
 	{ 'ก่',	{ 0,-1} },
