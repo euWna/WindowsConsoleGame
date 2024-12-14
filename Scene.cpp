@@ -30,7 +30,7 @@ void scene_Title()
 }
 
 extern void LoadGameData(void);
-extern void game_LoadStage(void);
+extern void stage_InitStage(void);
 //스테이지 로딩 함수 
 void scene_Loading()
 {
@@ -45,7 +45,7 @@ void scene_Loading()
 	//스테이지 시작시 초기화
 	else
 	{
-		game_LoadStage();
+		stage_InitStage();
 	}
 
 	return;

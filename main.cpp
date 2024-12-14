@@ -114,21 +114,21 @@ int main(void)
 	}
 }
 
-enum GameSetting
+enum Data_LoadedWhenInitGame
 {
 	Init,
 	Data_SceneMgr,
 	Data_StageMgr,
-	Data_Player,
+	Data_PlayerMgr,
 	Data_EnemyMgr,
 	Finish,
 };
 
 void LoadGameData(void)
 {
-	static int nowSetting = Init;
+	static int now_loading = Init;
 
-	switch (nowSetting)
+	switch (now_loading)
 	{
 	case Init:
 		scene_ConvertTo(LOADING);
@@ -145,7 +145,7 @@ void LoadGameData(void)
 		break;
 
 	//Player 데이터 파싱 및 저장
-	case Data_Player:
+	case Data_PlayerMgr:
 		parseMgrData_Player();
 		break;
 
@@ -161,11 +161,11 @@ void LoadGameData(void)
 	//Game Restart시  
 	default:
 		currentStage = 0;
-		nowSetting = Finish;
+		now_loading = Finish;
 		return;
 	}
 
-	nowSetting++;
+	now_loading++;
 }
 
 const char* ScreenBorderLine = "================================================================================";

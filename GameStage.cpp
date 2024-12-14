@@ -144,45 +144,36 @@ int processFrame()
 extern SceneType currentScene;
 extern int currentStage;
 extern void parseData_Stage(int stageNum);
-void game_SetGameObjectsOnStage();
+void stage_ParseScreen();
 
 enum StageSetting
 {
 	Init,
 	ParseStageData,
+	ParseScreen,
 	InitGameObjects,
-	SetGameObjectsOnStage,
 	Finish
 };
 
-void game_LoadStage()
+void stage_InitStage()
 {
 	static int nowSetting = Init;
 
 	switch (nowSetting)
 	{
 	case Init:
-		break;
-
+		//동작 없음. 바로 다음 케이스로
+		nowSetting++;
 	case ParseStageData:
 		parseData_Stage(currentStage);
 		break;
 
-	case InitGameObjects:
-		///오브젝트 배열 0으로 초기화
-		memset(enemy, 0, sizeof(enemy));
-		memset(playerShot, 0, sizeof(playerShot));
-		memset(enemyShot, 0, sizeof(enemyShot));
-
-		///stage 변수 초기화
-		stageMgr._enemyAlive = stageMgr._numOfEnemies;
-		stageMgr._playerLife = playerSetting._maxLife;
-		eShotCnt = 0;
-		pShotCnt = 0;
+	case ParseScreen:
+		stage_ParseScreen();
 		break;
 
-	case SetGameObjectsOnStage:
-		game_SetGameObjectsOnStage();
+	case InitGameObjects:
+		stage_InitGameObjects();
 		break;
 
 	case Finish:
@@ -197,9 +188,7 @@ void game_LoadStage()
 	nowSetting++;
 }
 
-
-
-void game_SetGameObjectsOnStage()
+void stage_ParseScreen()
 {
 	char* c;
 
@@ -245,4 +234,18 @@ void game_SetGameObjectsOnStage()
 			}
 		}
 	}
+}
+
+void stage_InitGameObjects()
+{
+	///오브젝트 관련 변수 및 배열 0으로 초기화
+	memset(enemy, 0, sizeof(enemy));
+	memset(playerShot, 0, sizeof(playerShot));
+	memset(enemyShot, 0, sizeof(enemyShot));
+	eShotCnt = 0;
+	pShotCnt = 0;
+
+	///stage 변수 초기화
+	stageMgr._enemyAlive = stageMgr._numOfEnemies;
+	stageMgr._playerLife = playerSetting._maxLife;
 }
