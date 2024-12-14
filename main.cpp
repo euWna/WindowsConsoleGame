@@ -4,7 +4,6 @@
 #include <windows.h>
 
 //화면 출력
-#include "ScreenSetting.h"
 #include "Console.h"
 #include "Buffer.h"
 char ScreenBuffer[dfSCREEN_HEIGHT + 1][dfSCREEN_WIDTH];
@@ -123,7 +122,6 @@ enum GameSetting
 	Data_Player,
 	Data_EnemyMgr,
 	Finish,
-	GameRestart
 };
 
 void LoadGameData(void)
@@ -138,22 +136,22 @@ void LoadGameData(void)
 
 	//SceneMgr 데이터 파싱 -> Scene별 데이터 저장
 	case Data_SceneMgr: 
-		parseData_SceneMgr();
+		parseMgrData_StaticScene();
 		break;
 
 	//StageMgr 데이터 파싱 -> Stage별 파일경로 저장
 	case Data_StageMgr:
-		parseData_StageMgr();
+		parseMgrData_Stage();
 		break;
 
 	//Player 데이터 파싱 및 저장
 	case Data_Player:
-		parseData_Player();
+		parseMgrData_Player();
 		break;
 
 	//EnemyMgr 데이터 파싱 -> Enemy type별 데이터 및 저장
 	case Data_EnemyMgr:
-		parseData_EnemyMgr();
+		parseMgrData_Enemy();
 		break;
 
 	case Finish:

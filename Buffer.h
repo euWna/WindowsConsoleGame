@@ -2,7 +2,10 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 
-extern char ScreenBuffer[dfSCREEN_HEIGHT+1][dfSCREEN_WIDTH];
+#define dfSCREEN_WIDTH		81		// 콘솔 가로 80칸 + NULL
+#define dfSCREEN_HEIGHT		24		// 콘솔 세로 24칸
+
+extern char ScreenBuffer[dfSCREEN_HEIGHT + 1][dfSCREEN_WIDTH];
 //--------------------------------------------------------------------
 // 화면 버퍼를 지워주는 함수
 //

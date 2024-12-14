@@ -1,6 +1,5 @@
 #include <windows.h>
 
-#include "ScreenSetting.h"
 #include "Player.h"
 #include "Buffer.h"
 

@@ -21,7 +21,6 @@ struct StageMgr
 	int _enemyLocationData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 };
 
-
 extern StageMgr stageMgr;
 
 typedef char* Stage;

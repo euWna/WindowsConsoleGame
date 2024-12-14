@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "ScreenSetting.h"
+#include "Buffer.h"
 #include "MovePattern.h"
 #include "Enemy.h"
 #include "GameStage.h"

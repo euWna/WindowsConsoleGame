@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "Buffer.h"
+#include "Scene.h"
 
 StaticScene staticScene[NUM_OF_STATIC_SCENES] 
 = { {TITLE}, {LOADING}, {STAGE_CLEAR} ,{GAME_OVER}, {GAME_ALLCLEAR} };
@@ -28,8 +29,8 @@ void scene_Title()
 	}
 }
 
-extern void InitGame();
-extern void game_InitStage();
+extern void LoadGameData(void);
+extern void game_LoadStage(void);
 //½ºÅ×ÀÌÁö ·Îµù ÇÔ¼ö 
 void scene_Loading()
 {
@@ -38,13 +39,13 @@ void scene_Loading()
 	//°ÔÀÓ ½ÃÀÛ½Ã ÃÊ±âÈ­
 	if (currentStage == 0)
 	{
-		InitGame();
+		LoadGameData();
 	}
 
 	//½ºÅ×ÀÌÁö ½ÃÀÛ½Ã ÃÊ±âÈ­
 	else
 	{
-		game_InitStage();
+		game_LoadStage();
 	}
 
 	return;
@@ -55,7 +56,7 @@ void scene_StageClear()
 	//·ÎÁ÷ - È­¸é¹öÆÛ ¾÷µ¥ÀÌÆ®
 	buffer_UpdateScene(staticScene[STAGE_CLEAR].memory);
 
-	//ÀÔ·Â - ¿£ÅÍÅ° : ´ÙÀ½ ½ºÅ×ÀÌÁö / °ÔÀÓ Á¾·á
+	//ÀÔ·Â - ¿£ÅÍÅ° : ´ÙÀ½ ½ºÅ×ÀÌÁö
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
 		currentStage++;
@@ -69,12 +70,14 @@ void scene_GameOver()
 	//·ÎÁ÷ - È­¸é¹öÆÛ ¾÷µ¥ÀÌÆ®
 	buffer_UpdateScene(staticScene[GAME_OVER].memory);
 	
-	//ÀÔ·Â - ¿£ÅÍÅ° : °ÔÀÓ Àç½ÃÀÛ
+	//ÀÔ·Â
+	///¿£ÅÍÅ° : °ÔÀÓ Àç½ÃÀÛ
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
 		scene_ConvertTo(TITLE);
 		return;
 	}
+	///ESCÅ° : °ÔÀÓ Á¾·á
 	else if ((GetAsyncKeyState(VK_ESCAPE) & 0x8001))
 	{
 		scene_ConvertTo(EXIT);
@@ -84,17 +87,17 @@ void scene_GameOver()
 
 void scene_GameAllClear()
 {
-	//ë¡œì§ - í™”ë©´ë²„í¼ ì—…ë°ì´íŠ¸
+	//·ÎÁ÷ - È­¸é¹öÆÛ ¾÷µ¥ÀÌÆ®
 	buffer_UpdateScene(staticScene[GAME_OVER].memory);
 
-	//ì…ë ¥
-	///ì—”í„°í‚¤ : ê²Œì„ ì¬ì‹œì‘
+	//ÀÔ·Â
+	///¿£ÅÍÅ° : °ÔÀÓ Àç½ÃÀÛ
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8001))
 	{
 		scene_ConvertTo(TITLE);
 		return;
 	}
-	///ESCí‚¤ : ê²Œì„ ì¢…ë£Œ
+	///ESCÅ° : °ÔÀÓ Á¾·á
 	else if ((GetAsyncKeyState(VK_ESCAPE) & 0x8001))
 	{
 		scene_ConvertTo(EXIT);

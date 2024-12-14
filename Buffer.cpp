@@ -1,7 +1,6 @@
 #include <memory.h>
 #include <string.h>
 
-#include "ScreenSetting.h"
 #include "Buffer.h"
 
 

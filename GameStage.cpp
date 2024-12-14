@@ -1,6 +1,5 @@
 #include <windows.h>
 
-#include "ScreenSetting.h"
 #include "Buffer.h"
 #include "Console.h"
 #include "Player.h"
@@ -148,7 +147,7 @@ enum StageSetting
 	Finish
 };
 
-void game_InitStage()
+void game_LoadStage()
 {
 	static int nowSetting = Init;
 

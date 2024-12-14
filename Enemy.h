@@ -9,7 +9,7 @@
 struct Enemy_MovePatternQueue
 {
 	//Circular Queue
-	int _moveIdx = 0;
+	int _moveIdx;
 	MovePattern* _type;
 };
 
@@ -21,7 +21,7 @@ struct Enemy
 	int _shotCoolTime;
 	Enemy_MovePatternQueue _movePattern;
 	char _sprite;
-	bool _isDead = false;
+	bool _isDead = false;;
 };
 
 struct EnemySetting
