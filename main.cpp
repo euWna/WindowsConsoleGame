@@ -7,13 +7,14 @@
 #include "ScreenSetting.h"
 #include "Console.h"
 #include "Buffer.h"
-char ScreenBuffer[dfSCREEN_HEIGHT+1][dfSCREEN_WIDTH];
+char ScreenBuffer[dfSCREEN_HEIGHT + 1][dfSCREEN_WIDTH];
 void RenderScreen(void);
 
 //게임 데이터
 #include "MovePattern.h"
 #include "DataParsing.h"
-void InitGame(void);
+enum GameSetting;
+void LoadGameData(void);
 
 //게임 로직
 #include "GameStage.h"
@@ -41,13 +42,13 @@ int main(void)
 	timeBeginPeriod(1);
 	DWORD t_ProgramStart = timeGetTime();
 	cs_Initial();
-	InitGame();
+	LoadGameData();
 
 	while (true)
 	{
 		buffer_Clear();
 		
-		//로직부
+		//로직 (씬 제어)
 		DWORD t_LogicStart = timeGetTime();
 		switch (currentScene)
 		{
@@ -122,7 +123,7 @@ enum GameSetting
 	GameRestart
 };
 
-void InitGame()
+void LoadGameData(void)
 {
 	static int nowSetting = Init;
 

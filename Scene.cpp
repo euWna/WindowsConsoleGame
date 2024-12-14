@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <windows.h>
 
-#include "ScreenSetting.h"
-#include "Scene.h"
 #include "Buffer.h"
 
 StaticScene staticScene[NUM_OF_STATIC_SCENES] = { {TITLE}, {LOADING}, {STAGE_CLEAR} ,{GAME_OVER}, {GAME_ALLCLEAR} };
