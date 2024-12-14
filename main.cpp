@@ -76,6 +76,9 @@ int main(void)
 			scene_StageClear();
 			break;
 		
+		case GAME_ALLCLEAR:
+			scene_GameAllClear();
+			break;
 		
 		case EXIT:
 			timeEndPeriod(1);
