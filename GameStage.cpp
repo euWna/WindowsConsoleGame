@@ -208,15 +208,17 @@ SceneType processFrame(SHORT inputKey)
 enum StageSetting
 {
 	Init,
+	InitGameObjects,
 	ParseStageData,
 	ParseScreen,
-	InitGameObjects,
+	InitStageMgr,
 	Finish
 };
 
+void stage_InitGameObjects();
 extern void parseData_Stage(int stageNum);
 void stage_ParseScreen();
-void stage_InitGameObjects();
+void stage_InitStageMgr();
 
 void stage_InitStage()
 {
@@ -225,8 +227,12 @@ void stage_InitStage()
 	switch (nowSetting)
 	{
 	case Init:
-		//동작 없음. 바로 다음 케이스로
 		nowSetting++;
+		//[[fallthrough]]
+	case InitGameObjects:
+		stage_InitGameObjects();
+		break;
+
 	case ParseStageData:
 		parseData_Stage(currentStage);
 		break;
@@ -235,8 +241,8 @@ void stage_InitStage()
 		stage_ParseScreen();
 		break;
 
-	case InitGameObjects:
-		stage_InitGameObjects();
+	case InitStageMgr:
+		stage_InitStageMgr();
 		break;
 
 	case Finish:
@@ -309,6 +315,10 @@ void stage_InitGameObjects()
 	eShotCnt = 0;
 	pShotCnt = 0;
 
+}
+
+void stage_InitStageMgr()
+{
 	///stage 변수 초기화
 	stageMgr._enemyAlive = stageMgr._enemyTotal;
 	stageMgr._playerLife = playerSetting._maxLife;

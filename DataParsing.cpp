@@ -272,7 +272,7 @@ void parseData_Stage(int stageNum)
 	char* bufferPtr = buffer;
 
 	///1. 등장 Enemy 총 개수
-	*numOfEnemies = parseInt(&buffer);
+	*numOfEnemies = parseInt(&bufferPtr);
 
 	///2. stage 스크린 데이터
 	char* bufferPtr1 = bufferPtr;
