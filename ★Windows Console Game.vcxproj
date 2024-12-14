@@ -176,6 +176,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="DataParsing.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameMgr.h" />
     <ClInclude Include="GameStage.h" />
     <ClInclude Include="MovePattern.h" />
     <ClInclude Include="Player.h" />
@@ -186,7 +187,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="ScreenSetting.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\Data_Overview.txt" />
