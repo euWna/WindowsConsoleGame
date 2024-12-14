@@ -33,7 +33,7 @@ void enemy_GetShot(int enemyIdx)
 	{
 		e->_isDead = true;
 		stageMgr._enemyAlive--;
-		stageMgr._enemyLocationData[e->_yPos][e->_xPos] = MAX_ENEMY;
+		stageMgr._enemyLocationData[e->_yPos][e->_xPos] = EMPTY;
 	}
 	else
 	{
@@ -48,7 +48,7 @@ void enemy_Move(int enemyIdx)
 	int moveIdx = q->_moveIdx;
 	MoveOffset* pattern = q->_type->_pattern;
 
-	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = MAX_ENEMY;
+	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = EMPTY;
 	e->_xPos += pattern[moveIdx]._x;
 	e->_yPos += pattern[moveIdx]._y;
 	stageMgr._enemyLocationData[e->_yPos][e->_xPos] = enemyIdx;

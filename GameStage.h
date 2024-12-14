@@ -3,6 +3,7 @@
 #define __GAME_STAGE_H__
 
 #define MAX_STAGE 3
+#define EMPTY -1
 
 enum GameObject
 {
@@ -17,12 +18,11 @@ struct StageMgr
 	int _numOfEnemies;
 	int _enemyAlive;
 	int _playerLife;
+
+	int _enemyLocationData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH] = { -1 }; //각 좌표에 위치한 enemy의 index를 저장하는 배열
 	char _stageData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
-	int _enemyLocationData[dfSCREEN_HEIGHT][dfSCREEN_WIDTH];
 };
 
 extern StageMgr stageMgr;
-
-typedef char* Stage;
 
 #endif

@@ -97,7 +97,7 @@ int processFrame()
 		PlayerShot* ps = &playerShot[psIdx];
 		int shotEnemyIdx;
 
-		if (stageMgr._enemyLocationData[ps->_yPos][ps->_xPos] < MAX_ENEMY)
+		if (stageMgr._enemyLocationData[ps->_yPos][ps->_xPos] != EMPTY)
 		{
 			shotEnemyIdx = stageMgr._enemyLocationData[ps->_yPos][ps->_xPos];
 			enemy_GetShot(shotEnemyIdx);
