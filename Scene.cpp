@@ -147,6 +147,9 @@ void scene_GameAllClear()
 	default:
 		break;
 	}
+
+	//출력 -> Game AllClear 화면 업데이트
+	buffer_UpdateScene(staticScene[GAME_ALLCLEAR].memory);
 }
 
 extern SceneType processFrame(SHORT inputKey);
